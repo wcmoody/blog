@@ -39,7 +39,7 @@ pre {
 }
 
 .mediumnavigation {
-    background: rgba(255, 255, 255, .97);
+    background: #71262d; /*rgba(255, 255, 255, .97);*/
     box-shadow: 0 2px 2px -2px rgba(0, 0, 0, .15);
     transition: top 0.2s ease-in-out;
 }
@@ -898,4 +898,7 @@ iframe {
 .lazyimg[data-srcset] {
     opacity: 0;
     transition: opacity .25s;
-}
+
+.bg-white {
+  background-color: #71262d !important;
+}}
