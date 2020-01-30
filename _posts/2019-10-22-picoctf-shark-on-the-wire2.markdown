@@ -10,6 +10,7 @@ categories:
   - ctf
   - network
   - pcap
+  - pico
 
 ---
 
