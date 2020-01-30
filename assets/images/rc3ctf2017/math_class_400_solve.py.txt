@@ -1,0 +1,130 @@
+import sys
+from random import randint as ri
+from string import digits, lowercase
+import re
+
+data = numbers = """42 54 66 24 29 32 21
+29 21 15 53 13 46 24
+71 57 84 69 51 85 37
+
+22 36 24 64 29 41 05
+52 27 29 27 36 02 17
+53 77 71 77 43 25 37
+
+29 10 45 22 02 34 42
+43 21 38 27 50 25 41
+59 27 61 57 57 73 99
+
+42 45 41 38 49 62 25
+29 27 33 27 34 18 32
+89 81 62 61 69 63 53
+
+22 65 27 22 41 26 52
+23 16 44 14 18 48 43
+59 85 63 23 79 97 81"""
+
+for c in "02468":
+    data = data.replace(c, "o")
+
+for c in "13579":
+    data = data.replace(c, ".")
+
+data = data.split('\n')
+
+letterdots = [[1,],[1,2], [1,4], [1,4,5], [1,5], [1,2,4], [1,2,4,5], [1,2,5],
+        [2,4], [2,4,5], [1,3], [1,2,3], [1,3,4], [1,3,4,5], [1,3,5],[1,2,3,4],
+        [1,2,3,4,5], [1,2,3,5], [2,3,4], [2,3,4,5], [1,3,6], [1,2,3,6], 
+        [2,4,5,6], [1,3,4,6], [1,3,4,5,6], [1,3,5,6]]
+shift = [6,]
+numbersign = [3,4,5,6]
+
+def d2l(dotlist):
+    if dotlist in letterdots:
+        return lowercase[letterdots.index(dotlist)]
+    elif dotlist in puncdots:
+        return punctuation[puncdots.index(dotlist)]
+    else:
+        return "&"
+
+def solve(data):
+    for linecount, line in enumerate(data):
+        if len(line)==0: continue
+        line = line.strip()
+        if linecount == 0:
+            letters = []
+            for pairs in line.strip().split(' '):
+                letters.append([])
+
+        lettercount = len(letters)
+        for i, pairs in enumerate(line.split(' ')):
+            if len(pairs) == 0: continue
+            for j, column in enumerate(pairs):
+                if len(column) == 0: continue
+                if j==0 and column == 'o':
+                    letters[i].append(linecount+1 )
+                if j==1 and column == 'o':
+                    letters[i].append(linecount + 4)
+
+        if linecount == 2:
+            message = ''
+            i = 0
+            while i < len(letters):
+                letter = sorted(letters[i])
+                if letter == shift:
+                    nextletter = sorted(letters[i+1])
+                    message += d2l(nextletter).upper()
+                    i += 2
+                elif letter == numbersign:
+                    nextletter = sorted(letters[i+1])
+                    message += d2i(nextletter)
+                    i += 2
+                else:
+                    message += d2l(letter)
+                    i += 1
+            return message
+
+message1 = ""
+for cipher in [data[i:i+4] for i in range(0, len(data), 4)]:
+    message1 += solve(cipher[:3])
+
+print "Part 1: %s" % message1
+
+patt_str = (("(\d{2}).?" * 7) + "\n") * 3
+
+patt = re.compile(patt_str)
+
+data = numbers
+
+match = patt.findall(data)
+
+option1 = []
+
+for m in match:
+    for i in range(7):
+        a, b, c = [int(x) for x in (m[i], m[i+7], m[i+14])]
+        d = c - (a+b)
+        if d <= 0: d = abs(d) + 1
+        option1.append(d)
+
+message2 = "".join(lowercase[o-1] for o in option1)
+
+print "Part 2: %s" % message2
+
+primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 
+            37, 41, 43, 47, 53, 59, 61, 67, 
+            71, 73, 79, 83, 89, 97]
+
+def bitstream(letter):
+    bs = ""
+    for b in letter:
+        bs += "1" if (int(b) in primes or int(b)%10==2) else "0"
+    return bs
+
+flag = ""
+
+for m in match:
+    letters = [m[i:i+7] for i in range(0, len(m), 7)]
+    for letter in letters:
+        flag += chr(int("".join(bitstream(letter)),2))
+
+print "Final Flag: %s" % flag
