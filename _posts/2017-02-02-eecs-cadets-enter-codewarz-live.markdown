@@ -2,6 +2,8 @@
 layout: post
 title: EECS cadets, faculty enter live Codewarz for first time
 date: 2017-02-02 13:37:42
+author: clay
+image: assets/images/c3t/codewarz.jpg
 excerpt_separator: <!--more-->
 disqus: true
 ---
