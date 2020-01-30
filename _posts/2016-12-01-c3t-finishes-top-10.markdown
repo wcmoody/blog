@@ -3,7 +3,12 @@ layout: post
 title: Cadet Competitive Cyber Team finishes in Top 10 at competition
 date: 2016-12-01 11:22:33
 excerpt_separator: <!--more-->
+image: assets/images/c3t/csaw.jpg
+author: clay
 disqus: true
+categories:
+  - c3t
+  - ctf
 ---
 
 _This article previously appeared [here.](http://www.pointerview.com/2016/12/01/cadet-competitive-cyber-team-finishes-in-top-10-at-competition/)_
