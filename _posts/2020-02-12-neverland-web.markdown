@@ -19,7 +19,7 @@ Getting started with CTFs can be intimidating but over the past 5 years we have 
 
 I was able to solve all the web challenges (at least the ones that were post prior to Monday morning). The full web challenge board showed six total challenges ranging from 10 to 150 points. Keep reading to see all the write ups or jump ahead to one of interest to you.
 
-![web_challenges](/assets/images/neverlan2020/web_all_solved.png)
+![web_challenges](../assets/images/neverlan2020/web_all_solved.png)
 
 ### Challenges
 
@@ -29,7 +29,7 @@ I was able to solve all the web challenges (at least the ones that were post pri
 
 ## Cookie Monster ##
 
-![cookie_monster_page](/assets/images/neverlan2020/cookie_monster.png)
+![cookie_monster_page](../assets/images/neverlan2020/cookie_monster.png)
 Visiting the URL provided in the challenge prompt, we are treated with a basic website. Based on the title, its a good indication that we are interested in the cookies for the website.
 
 According to the site ["What are Cookies?](http://www.whatarecookies.com/), we know the following:
@@ -113,7 +113,7 @@ if m:
 
 ## Stop the Bot ## 
 
-![cookie_monster_page](/assets/images/neverlan2020/stop_the_bot.png)
+![cookie_monster_page](../assets/images/neverlan2020/stop_the_bot.png)
 
 This challenge prompt only provides only the URL of the target. When we visit, we do not see anything interesting. We will rely on the title of the challenge to give us some guidance. The mention of a "bot" for web challenges, should make us think of the **Robots Exclusion Protocol**. 
 
@@ -200,15 +200,15 @@ if disallows:
 
 ## SQL Breaker ##
 
-![sql_breaker_page](/assets/images/neverlan2020/sql_breaker.png)
+![sql_breaker_page](../assets/images/neverlan2020/sql_breaker.png)
 
 This challenge prompt again points us at the URL for the website and provides us the flag format. Checking out the website in our browser shows us a basic page with a menu bar.
 
-![sql_break_home_page](/assets/images/neverlan2020/sql_break_home_page.png)
+![sql_break_home_page](../assets/images/neverlan2020/sql_break_home_page.png)
 
 The navigation bar link to login takes us to `login.php` which has a simple form that allows users to login to the website. 
 
-![sql_break_login_page](/assets/images/neverlan2020/sql_break_login_page.png)
+![sql_break_login_page](../assets/images/neverlan2020/sql_break_login_page.png)
 
 Viewing the source code for the website we see that it sends a `GET` request to the same page with parameters values of `username` and `password` aligned to the user provided input on the form. Though, I did not grab a copy of the source code, we can assume it is something like this:
 
@@ -228,7 +228,7 @@ We are test for a _SQL injection_ vulnerability in the `login.php` code.
 
 Here is a slide from an intro to cybersecurity and CTF one-day course I ran at Hogwartz for high school students.
 
-![sle_sql_injection](/assets/images/neverlan2020/sle-sql-injection.png)
+![sle_sql_injection](../assets/images/neverlan2020/sle-sql-injection.png)
 
 You can also read an introduction to SQL injections [here](https://www.w3schools.com/sql/sql_injection.asp). This is written from the perspective of a web admin, so when you see "you", that is not _you_ as in the hacker, but the defender / system owner.
 
@@ -270,7 +270,7 @@ The OR clause means only one of these options needs to be true and since one alw
 
 So back to the website, we will use our malicious username and any password to see what happens. 
 
-![sql breaker flag](/assets/images/neverlan2020/sql_breaker_flag.png)
+![sql breaker flag](../assets/images/neverlan2020/sql_breaker_flag.png)
 
 And there is our flag. You can see the website welcomes the user named "Admin" so that is who we authenticated as with our malicious payload.
 
