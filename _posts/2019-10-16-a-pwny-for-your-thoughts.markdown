@@ -27,7 +27,7 @@ Some of this may seem overkill for such an easy problem, but it's cool to try an
 
 You beat the first overflow challenge. Now overflow the buffer and change the return address to the flag function in this _program_? You can find it in `/problems/overflow-1_...` on the shell server. _Source_
 
-We are provided with links to a binary executable [vuln](../assets/ctffiles/pico2019/oveflow1/vuln) and the source [vuln.c](../assets/ctffiles/pico2019/overflow1/vuln.c). The source can seen below.
+We are provided with links to a binary executable [vuln](../assets/images/pico2019/oveflow1/vuln) and the source [vuln.c](../assets/images/pico2019/overflow1/vuln.c). The source can seen below.
 
 ```c
 #include <stdio.h>
@@ -182,15 +182,15 @@ If we did not have the source code, we would want to use some other tools to che
 
 _Binary Ninja_
 
-![](../assets/ctffiles/pico2019/overflow1/binja-main.png)
+![](../assets/images/pico2019/overflow1/binja-main.png)
 
 Looking at the _main_ function in Binary Ninja, we see the preamble setting up our stack frame, setting the buffering on standard out, and the setting up of the real group ids for the binary. Then we see the call to `puts()` with the prompt and the call to `vuln()`
 
-![](../assets/ctffiles/pico2019/overflow1/binja-vuln.png)
+![](../assets/images/pico2019/overflow1/binja-vuln.png)
 
 Looking at the _vuln_ function, we see a call to `gets()` , the call to the `get_return_address` function, then a `printf()` call about jumping back to the return address.
 
-![](../assets/ctffiles/pico2019/overflow1/binja-flag.png)
+![](../assets/images/pico2019/overflow1/binja-flag.png)
 
 Finally, in our uncalled _flag_ function we see a call to `fopen()` on the flag file then a branch based on the result. If the flag file is not there or cannot be opened, an error is printed and the program exits. If the flag file is opened, we see a call to `fgets()` and then `printf()`
 
@@ -227,7 +227,7 @@ Looking again at the source code for `vuln`, we see the argument to gets is the 
 
 The debuging the binary in GDB with _peda_ enhancement shows us that the instruction at address `0x08048678` is a call to `gets()` and the argument which is stored on the stack is the address of the memory location 0x48 bytes below our saved base pointer register. Thus after we send 72 bytes, we are first overwriting the saved based pointer with the next four bytes. The four bytes after that are overwriting our saved return instruction pointer. Or the address of the next instruction we will call when we exit the `vuln` function.
 
-![](../assets/ctffiles/pico2019/overflow1/peda-vuln-gets.png)
+![](../assets/images/pico2019/overflow1/peda-vuln-gets.png)
 
 **Exploit**
 
@@ -252,7 +252,7 @@ Interestingly enough, the instruction to call our vulnerable function, is 5 byte
 
 Remembering the blurb from the man page for `gets()`, it says the function will read all the characters until it encounters a newline or an end-of-file condition, and then that character will be replaced with a null byte. So if we send exactly 76 bytes then a newline (grand total of 77), we will overflow the buffer and overwrite the saved base pointer and our null byte will overwrite the LSB of the saved return pointer. Esssentially replacing that `0x05` with our `0x00` and thus calling `vuln()` again.
 
-![](../assets/ctffiles/pico2019/overflow1/peda-vuln-ebp-eip.png)
+![](../assets/images/pico2019/overflow1/peda-vuln-ebp-eip.png)
 
 ```bash
 $ python -c "print 76 * 'A'" | ./vuln
