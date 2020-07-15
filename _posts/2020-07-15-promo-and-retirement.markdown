@@ -11,7 +11,7 @@ image: assets/images/retirement.jpg
 
 ---
 
-Wow… it's been quite a day. I have been overwhelmed with all the emails, texts, calls, slack messages, owls and carrier pigeons, etc congratulating me on 
+Wow… it's been quite a day. I have been overwhelmed with all the emails, texts, calls, slack messages, owls and carrier pigeons, etc congratulating me on the 
 promotion list news this morning. Each and every message means so much to me.
 
 Yes, I was selected for promotion to “full-bird” Colonel this morning. The selection rate across the Army was a little less than 50% and was a 
