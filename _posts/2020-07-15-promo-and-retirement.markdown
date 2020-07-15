@@ -7,7 +7,7 @@ disqus: true
 author: clay
 categories:
   - career
-image: assets/images/retirement.png
+image: assets/images/retirement.jpg
 
 ---
 
