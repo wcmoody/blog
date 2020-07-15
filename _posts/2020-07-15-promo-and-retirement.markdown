@@ -29,6 +29,6 @@ School, and the Defense Digital Service.
 
 “Immeasurably More” - Ephesians 3:20
 
-![](/assets/images/promo_and_retirement.png)
+![](../assets/images/promo_and_retirement.png)
 
 top image source: [](https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fspecials-images.forbesimg.com%2Fdam%2Fimageserve%2F805095188%2F960x0.jpg%3Ffit%3Dscale)
