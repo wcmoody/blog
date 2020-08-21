@@ -12,7 +12,7 @@ image: assets/images/virseccon/virseccon-ctf-logo.png
 
 ---
 
-VirSecCon CTF was the CTF as part of the Virtual Security Conference in April 2020 during the COVID-19 pandemic. This CTF was put on my [John Hammond](https://www.youtube.com/channel/UCVeW9qkBjo3zosnqUbG7CFw) and feature many great introductory and moderate challenges. I competed by myself and overall I finished in 35th place (or 36th depending on where you look) out of 1536.
+VirSecCon CTF was the CTF as part of the Virtual Security Conference in April 2020 during the COVID-19 pandemic. This CTF was put on by [John Hammond](https://www.youtube.com/channel/UCVeW9qkBjo3zosnqUbG7CFw) and feature many great introductory and moderate challenges. I competed by myself and overall I finished in 35th place (or 36th depending on where you look) out of 1536.
 
 ![](../assets/images/virseccon/final_place.jpeg)
 
@@ -32,7 +32,7 @@ Testing for a quick SQL injection payload (`' or 1=1 -- `) for the user name got
 
 I immediately knew this meant the password was the flag. We would need to tease it out via a blind sql injection.
 
-Throughing in an erronous login, we were given a different error message.
+Throwing in an erronous login, we were given a different error message.
 
 ![](../assets/images/virseccon/eyeless-login-error.png)
 
