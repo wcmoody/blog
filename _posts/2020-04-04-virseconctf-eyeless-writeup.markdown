@@ -210,7 +210,7 @@ Table name is users
 Table name is not nosuchtablename
 ```
 
-Following along with the UNION attack we want to select pick our valid username which we will guess is `admin`. The following will allow us to confirm that hypothesis.
+Following along with the UNION attack we want to find the valid username which we will guess is `admin`. The following will allow us to confirm that hypothesis.
 
 ```python
 #!/usr/bin/env python3
