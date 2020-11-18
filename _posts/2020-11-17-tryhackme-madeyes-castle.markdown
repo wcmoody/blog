@@ -1,15 +1,16 @@
 ---
 layout: post
-title: "NeverlanCTF 2020 - Web Challenges"
-date: 2020-02-12 13:37:11
+title: "TryHackMe - Madeye's Castle Writeup"
+date: 2020-11-17 13:37:11
 excerpt_separator: <!--more-->
 disqus: true
 author: clay
 categories:
   - ctf
-  - beginner
+  - writeup
   - web
-image: assets/images/neverlan2020/neverlanctf_main.png
+  - sqli
+image: assets/images/madeyecastle/castle_main.png
 
 ---
 
