@@ -201,7 +201,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 ===============================================================
 
 ```
-We can now browse to that folder, but we can looking a little deeper and see another file.
+We can not browse to that folder, but we can look a little deeper and see another file.
 
 ```
 $ gobuster dir -u http://10.10.238.162/backup -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
@@ -226,7 +226,7 @@ Progress: 7894 / 220561 (3.58%)^C
 ===============================================================
 ```
 
-Grabbing this email file. We see a conversation about virtual hosting and registering a domain.
+Grabbing this email file, we see a conversation about virtual hosting and registering a domain.
 
 ```
 $ wget http://10.10.238.162/backup/email
@@ -394,7 +394,7 @@ We get an error trying to access the `information_schema` table, so it looks unl
 
 We get a hit on SQLite, and a table name of *users*.
 
-Lets get the SQL command used to build the `user` table.
+Lets get the SQL command used to build the `users` table.
 
 ```python
 >>> data['user'] = "' union select 1,2,3,sql from sqlite_master -- "
