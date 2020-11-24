@@ -177,7 +177,7 @@ $ nikto -h  "http://10.10.238.162"
 + 1 host(s) tested
 ```
 
-Same thing with `gobuster`
+But when doing a directory search with  `gobuster` we find an interesting folder.
 
 ```
 $ gobuster dir -u http://10.10.238.162 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
@@ -192,12 +192,96 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 [+] User Agent:     gobuster/3.0.1
 [+] Timeout:        10s
 ===============================================================
-2020/11/17 13:17:08 Starting gobuster
+2020/11/17 13:37:08 Starting gobuster
 ===============================================================
 /server-status (Status: 403)
+/backup (Status: 301)
 ===============================================================
-2020/11/17 13:17:48 Finished
+2020/11/17 13:37:48 Finished
 ===============================================================
+
+```
+We can now browse to that folder, but we can looking a little deeper and see another file.
+
+```
+$ gobuster dir -u http://10.10.238.162/backup -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+===============================================================
+Gobuster v3.0.1
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
+===============================================================
+[+] Url:            http://10.10.238.162/backup
+[+] Threads:        10
+[+] Wordlist:       /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] Status codes:   200,204,301,302,307,401,403
+[+] User Agent:     gobuster/3.0.1
+[+] Timeout:        10s
+===============================================================
+2020/11/17 13:37:21 Starting gobuster
+===============================================================
+/email (Status: 200)
+Progress: 7894 / 220561 (3.58%)^C
+[!] Keyboard interrupt detected, terminating.
+===============================================================
+2020/11/24 13:37:25 Finished
+===============================================================
+```
+
+Grabbing this email file. We see a conversation about virtual hosting and registering a domain.
+
+```
+$ wget http://10.10.238.162/backup/email
+--2020-11-17 09:41:09--  http://10.10.238.162/backup/email
+Connecting to 10.10.238.162:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1527 (1.5K)
+Saving to: ‘email’
+
+email                 100%[=========================>]   1.49K  --.-KB/s    in 0s
+
+2020-11-17 09:41:09 (163 MB/s) - ‘email’ saved [1527/1527]
+
+$ cat email
+Madeye,
+
+It is done. I registered the name you requested below but changed the "s" to a "z". You should be good to go.
+
+RME
+
+--------
+On Tue, Nov 3, 2020 at 8:54 AM Madeye Moody <ctf@madeye.ninja> wrote:
+Mr. Roar M. Echo,
+
+Sounds great! Thanks, your mentorship is exactly what we need to avoid legal troubles with the Ministry of Magic.
+
+Magically Yours,
+madeye
+
+--------
+On Tue, Nov 3, 2020 at 8:53 AM Roar May Echo <info@roarmayecho.com> wrote:
+Madeye,
+
+I don't think we can do "hogwarts" due to copyright issues, but let’s go with "hogwartz", how does that sound?
+
+Roar
+
+--------
+On Tue, Nov 3, 2020 at 8:52 AM Madeye Moody <ctf@madeye.ninja> wrote:
+Dear Mr. Echo,
+
+Thanks so much for helping me develop my castle for TryHackMe. I think it would be great to register the domain name of "hogwarts-castle.thm" for the box. I have been reading about virtual hosting in Apache and it's a great way to host multiple domains on the same server. The docs says that...
+
+> The term Virtual Host refers to the practice of running more than one web site (such as
+> company1.example.com and company2.example.com) on a single machine. Virtual hosts can be
+> "IP-based", meaning that you have a different IP address for every web site, or "name-based",
+> meaning that you have multiple names running on each IP address. The fact that they are
+> running on the same physical server is not apparent to the end user.
+
+You can read more here: https://httpd.apache.org/docs/2.4/vhosts/index.html
+
+What do you think?
+
+Thanks,
+madeye
 ```
 
 Now let's look at in the browser
@@ -208,7 +292,7 @@ Browsing to the website, we see what appears to be a default apache site with a 
 
 ![](../assets/images/madeyecastle/base-80-src.png)
 
-There is mention of virtual hosting and the domain name "hogwartz-castle.thm" Let's add that to our host file and see what we get.
+There is another mention of virtual hosting and the domain name "hogwartz-castle.thm" Let's add that to our host file and see what we get.
 
 ```
 $ cat /etc/hosts
