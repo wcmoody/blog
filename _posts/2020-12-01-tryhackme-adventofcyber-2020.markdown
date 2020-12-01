@@ -155,7 +155,7 @@ if flag:
 
 ```
 
-When you run this you get the followig answers [redacted]...
+When you run this you get the following answers [redacted]...
 
 ```
 The cookie name is auth
