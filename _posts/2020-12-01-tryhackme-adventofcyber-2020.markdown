@@ -53,7 +53,7 @@ Jump to a Day:
 
 #### Christmas Crisis - web exploitation
 
-There will be lots of walkthroughs will be posted for these, I am sure like JohnHammonds [video](https://youtu.be/BJF84oWHmok), but here is my python code to automate the solves.
+There will be lots of walkthroughs posted for these, I am sure like JohnHammonds [video](https://youtu.be/BJF84oWHmok), but here is my python code to automate the solves.
 
 ![](../assets/images/adventofcyber/day1-site.png)
 
