@@ -4,7 +4,6 @@ title: RC3CTF 2017 - Math Class Writeup
 date: 2017-11-21 13:37:42
 excerpt_separator: <!--more-->
 disqus: true
-featured: true
 image: assets/images/rc3ctf2017/math_class.png
 author: clay
 ---
