@@ -435,7 +435,7 @@ Here are the highlights:
 - Dump the tables and answer the questions
 
 
-```python3
+```python
 #!/usr/bin/env python3
 
 import requests
