@@ -616,7 +616,7 @@ Password cracked to be: w******3
 
 #### Login as user to web site
 
-We can now try to use the `Harry Turner` username and the `wingardiumleviosa123` password to login to the website. We get a hit and have one more message.
+We can now try to use the `Harry Turner` username and the `w******3` password to login to the website. We get a hit and have one more message.
 
 ![](../assets/images/madeyecastle/harry-login-success.png)
 
