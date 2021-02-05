@@ -611,7 +611,7 @@ And running it gets our password.
 
 ```
 $ ./hash_crack.py
-Password cracked to be: wingardiumleviosa123
+Password cracked to be: w******3
 ```
 
 #### Login as user to web site
