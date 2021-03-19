@@ -5,7 +5,7 @@ date: 2020-12-01 13:37:11
 excerpt_separator: <!--more-->
 disqus: true
 author: clay
-featured: true
+featured: false
 categories:
   - ctf
   - writeup
