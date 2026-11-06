@@ -52,11 +52,11 @@ The homepage had a collection of routine announcements. Routine for the North Po
 
 None of that was the official answer. These were just little rewards for reading the scenery instead of racing straight to the next flag.
 
-## Sheriff Coltrain has been here since the epoch
+## Sheriff Coaltrane has been here since the epoch
 
 ![The NPPD About page and its sheriff biography](../assets/images/holidayhack2017-nppd/slide-19-nppd-about-sheriff.png)
 
-Naturally, our police department needed a sheriff. Enter **Sheriff R. Purvis Coltrain**.
+Naturally, our police department needed a sheriff. Enter **Sheriff R. Purvis Coaltrane**.
 
 If you watched *The Dukes of Hazzard*, you probably recognize the reference to Sheriff Rosco P. Coltrane. And if you somehow missed it, the sheriff's complaint about chasing those **"darn duke boys"** was there to help.
 
