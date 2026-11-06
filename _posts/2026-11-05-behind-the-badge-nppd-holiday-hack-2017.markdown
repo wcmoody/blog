@@ -74,8 +74,6 @@ That was a clue, of sorts. More on that in a moment.
 
 ## Need help? Wave your mouse around
 
-![The instructions on the NPPD Need Help page](../assets/images/holidayhack2017-nppd/slide-17-nppd-need-help.png)
-
 The Need Help page explained how to summon the police in an emergency: move your mouse back and forth over the site's menu bar. Apparently doing it from the Infractions page produced "optimal results."
 
 Why would a police department give such peculiar instructions? Because I made the menu light up like a police siren when you moved the cursor over it.
