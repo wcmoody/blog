@@ -67,15 +67,15 @@ A quick filter in wireshark of `udp and data` will give us look at those interes
 
 ![](/blog/assets/images/pico2019/shark2/shark-2-filter-udp-data.png)
 
-From here, what I like to do is highlight the field I am interested in the bottom panel, and then select the packet back in the top frame. Using the arrow keys, I can scroll down and quickly see how the highlighted field in the hex dump changes. For this pcap, I see few mentions of "picoCTF" and wanting to get flags. These are red-herrings. I keep going further and further into the pcap, and begin to think maybe this is a dead end. Then I hit somethign interesting.
+From here, what I like to do is highlight the field I am interested in the bottom panel, and then select the packet back in the top frame. Using the arrow keys, I can scroll down and quickly see how the highlighted field in the hex dump changes. For this pcap, I see few mentions of "picoCTF" and wanting to get flags. These are red-herrings. I keep going further and further into the pcap, and begin to think maybe this is a dead end. Then I hit something interesting.
 
 ![](/blog/assets/images/pico2019/shark2/shark-2-start-1104.png)
 
-In packet 1104, I see the message `start`. This packet has a source port of 5000 and a destination port of 22. I try and see what other traffic has these characterists. Only one other packet matches, but its data is set to "end". This is packet 1303. So something is happening between "start" and "end" of packets 1104-1303.
+In packet 1104, I see the message `start`. This packet has a source port of 5000 and a destination port of 22. I try and see what other traffic has these characteristics. Only one other packet matches, but its data is set to "end". This is packet 1303. So something is happening between "start" and "end" of packets 1104-1303.
 
 ![](/blog/assets/images/pico2019/shark2/shark-2-ports-5000-22.png)
 
-Scrolling through these packets, nothing looks obvious. A few common themes do arise though. The data length is consistently 5, but its just five lowercase `a`'s. The destination ports seem to only be 22 and 100, but none of the source ports stay consistent for the traffic desintated for port 22. There is a block of traffic between ports 1234 on both ends. I decide to filter on the destination port 22 traffic since that is what our "start" and "end" message had.
+Scrolling through these packets, nothing looks obvious. A few common themes do arise though. The data length is consistently 5, but its just five lowercase `a`'s. The destination ports seem to only be 22 and 100, but none of the source ports stay consistent for the traffic designated for port 22. There is a block of traffic between ports 1234 on both ends. I decide to filter on the destination port 22 traffic since that is what our "start" and "end" message had.
 
 ![](/blog/assets/images/pico2019/shark2/shark-2-dstport-22.png)
 
@@ -148,7 +148,7 @@ print ''.join(chr(c) for c in flag)
 
 And there you have it.... but one last thing...
 
-Some `tshark` and bash kung-fu... hit me up if you want an explaination.
+Some `tshark` and bash kung-fu... hit me up if you want an explanation.
 
 ```bash
 $ tshark -r capture.pcap -Tfields -e udp.srcport "udp and udp.dstport==22" | grep -v 5000 | awk {'printf "%c", (int($0)-5000)'};echo
@@ -157,6 +157,6 @@ picoCTF{p1LLf3r3d_data_v1a_st3g0}
 
 **But Why?**
 
-Why would you need to be able to do this and where would you see such a thing? Data exfiltration is a big problem. Many pieces of malware these days will try to leak your data out across a network without network defenses detecting it. UDP is normally not monitoried that closely. This exfil was suttle in that it was small (only 5 bytes in the data field and that was just `aaaaa`) and was not a consistent flow from the same source port. Is this a realistic exfil? probably not, but the ability and exposure to find hidden gems in network traffic would be a learning point. And as discussed, only 522 of the 18,212 teams in picoCTF solved this challenge.
+Why would you need to be able to do this and where would you see such a thing? Data exfiltration is a big problem. Many pieces of malware these days will try to leak your data out across a network without network defenses detecting it. UDP is normally not monitored that closely. This exfil was subtle in that it was small (only 5 bytes in the data field and that was just `aaaaa`) and was not a consistent flow from the same source port. Is this a realistic exfil? probably not, but the ability and exposure to find hidden gems in network traffic would be a learning point. And as discussed, only 522 of the 18,212 teams in picoCTF solved this challenge.
 
 

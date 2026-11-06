@@ -2,6 +2,7 @@
 layout: post
 title: Gamification in a Network Engineering Class 
 date: 2017-05-20 13:37:42
+permalink: /gamification-in-network-engineering/
 excerpt_separator: <!--more-->
 disqus: true
 author: clay
