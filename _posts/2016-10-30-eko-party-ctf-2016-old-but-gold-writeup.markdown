@@ -7,7 +7,7 @@ disqus: true
 ---
 
 {: .center}
-![](/assets/images/ekoctf2016/punchcard.png)
+![](../assets/images/ekoctf2016/punchcards-grid.png)
 
 As part of BitsForEveryone, I competed in [EKO Party CTF 2016](https://ctftime.org/event/342). This CTF had a great Misc 250 point challenge called "Old But Gold." 
 

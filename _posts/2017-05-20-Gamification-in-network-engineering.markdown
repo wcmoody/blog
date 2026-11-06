@@ -207,7 +207,7 @@ The final flag requires a little stretch from what they learned in class. We tea
 
 Knowing there is a third flag, hopefully they are motivated to login to the router. Many cadets tried to use the standard default password for the class to no avail. If they decide to investigate the encrypted password from the config (`1505041B3B3E23253C0C222300381302124F`) and do a simple Google search for "decrypt cisco password" the first result will be [IFM - Cisco Password Cracker](http://www.ifm.net.nz/cookbooks/passwordcracker.html). Using this site, they will quickly decrypt the password as shown:
 
-![](/assets/images/gamification/passwordcrack.png)
+![](/blog/assets/images/gamification/passwordcrack.png)
 
 Using that password as the login reveals the third and final flag in the hostname of the device:
 
