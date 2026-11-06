@@ -14,16 +14,16 @@ categories:
   - web
 ---
 
-The great folks at SANS and CounterHack have brought us another adventure in the land of Josh and Jessica Dosis. This years challenge is called Santa's Business Card. The game can be found [here](http://holidayhackchallenge.com). After saving the world from the nefarious plot of the ATNA Corporation last year, siblings Josh and Jessica find themselves in a pickle when Santa gets kidnapped from there house on Christmas Eve. All that is left is Santa's business card. Its up to us to help the Dosis kids save Christmas (again...).
+The great folks at SANS and CounterHack have brought us another adventure in the land of Josh and Jessica Dosis. This year's challenge is called Santa's Business Card. The game can be found [here](http://holidayhackchallenge.com). After saving the world from the nefarious plot of the ATNA Corporation last year, siblings Josh and Jessica find themselves in a pickle when Santa gets kidnapped from their house on Christmas Eve. All that is left is Santa's business card. It's up to us to help the Dosis kids save Christmas (again...).
 
 
 <!--more-->
 
 ### Part 1: A Most Curious Business Card
 
-As you can see below, Santa's Business Card gives us a couple links to his social media profile (along with his middle initial, whoda thunk it!).
+As you can see below, Santa's Business Card gives us a couple of links to his social media profile (along with his middle initial, whoda thunk it!).
 
-We are asked a couple initial questions that this clue will lead us to the answers:
+We are asked a couple of initial questions that this clue will lead us to the answers:
 
 ```
 And that, Dear Reader, is where you get involved. Take a close look at Santa's Business card. You can also inspect the crime scene by entering the Dosis home here. Based on your analysis, please answer the following questions:
@@ -39,7 +39,7 @@ First we will look at Santa's [twitter account](https://twitter.com/SantaWClaus)
 
 Many Christmas like phrases can be seen in this message - words like joy, peace on earth, elf, Christmas, Santa, etc. The letters W (middle initial) and Q also appear. Scanning through all the tweets, this same type of message is repeated. Every once in a while, a string of periods and other punctuation marks can be found. Knowing that a secret message is hidden in the tweets, I suspect a potential encoding where maybe each Christmas word represents something special.
 
-The first task is to grab all the tweets so I can do some text parsing. I found a handy tool on Github called `tweet_dumper.py` ([source](https://href.li/?https://gist.github.com/yanofsky/5436496)) from user yanofsky. This tool using the `tweepy` and `csv` libraries to create a CSV file of a users tweets. There are some limitations on how many it can grab, but 350 is well below that threshold. Creating an Twitter API key in order to automate the process, I pull down the tweets into a CSV file, ordered newest to oldest. The full output can be seen [here](https://raw.githubusercontent.com/wcmoody/holidayhack/master/santawclaus_tweets.txt). There is no decoding needed as the message is an ASCII art message. I threw together an ugly PIL script to visualize the message. With the following code
+The first task is to grab all the tweets so I can do some text parsing. I found a handy tool on Github called `tweet_dumper.py` ([source](https://href.li/?https://gist.github.com/yanofsky/5436496)) from user yanofsky. This tool uses the `tweepy` and `csv` libraries to create a CSV file of a user's tweets. There are some limitations on how many it can grab, but 350 is well below that threshold. Creating a Twitter API key in order to automate the process, I pull down the tweets into a CSV file, ordered newest to oldest. The full output can be seen [here](https://raw.githubusercontent.com/wcmoody/holidayhack/master/santawclaus_tweets.txt). There is no decoding needed as the message is an ASCII art message. I threw together an ugly PIL script to visualize the message. With the following code
 
 ```python
 from PIL import Image

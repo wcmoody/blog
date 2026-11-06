@@ -11,7 +11,7 @@ image: assets/images/retirement.jpg
 
 ---
 
-Wow… it's been quite a day. I have been overwhelmed with all the emails, texts, calls, slack messages, owls and carrier pigeons, etc congratulating me on the 
+Wow… it's been quite a day. I have been overwhelmed with all the emails, texts, calls, slack messages, owls and carrier pigeons, etc., congratulating me on the 
 promotion list news this morning. Each and every message means so much to me.
 
 Yes, I was selected for promotion to “full-bird” Colonel this morning. The selection rate across the Army was a little less than 50% and was a 
@@ -21,8 +21,8 @@ that we all passed during the last 2 years. This selection is a testament to the
 But, also today I got word that “big Army” has approved my request to retire. Many have asked me if the promotion news changes my plans. I am glad 
 to say that NO, I still will retire. It's been a great career and I have been blessed and honored to serve my country for the past two decades plus. This was a family decision. My amazing wife and kids have followed (and sometimes led) me across the world during my time in and out of uniform. 13 times our house has been packed by movers (or ourselves); we have resided in 7 states; and I have officially traveled to 7 different countries. And the Army got me three college degrees.
 
-But every good journey must come to an end. So come June 1st 2021, I will join many heroes, patriots, scholars, and warriors on the Army’s retired roster. 
-But I am not done yet, I am excited to continue to serve these next 11 months and do great things for the US Army, the Army Cyber Institute, the Army Cyber 
+But every good journey must come to an end. So come June 1st, 2021, I will join many heroes, patriots, scholars, and warriors on the Army’s retired roster. 
+But I am not done yet. I am excited to continue to serve these next 11 months and do great things for the US Army, the Army Cyber Institute, the Army Cyber 
 School, and the Defense Digital Service.
 
 - Clay

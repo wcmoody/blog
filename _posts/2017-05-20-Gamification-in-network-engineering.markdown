@@ -10,7 +10,7 @@ image: assets/images/gamification/high-speed-internet.jpg
 
 In my [IT350](http://wclaymoody.com/teaching/cy-350-networking-engineering-and-design) course, I like to add some capture the flag events on the final project as bonus questions. I take this opportunity to expose the students to CTF games and also allow them to go deeper on a subject that has been covered in class.
 
-This semester I had a three part problem with three flags. The first two flags were worth three points each and the last one was for four points. The flags were to be solved in order and the difficult increased with each one. Below is the problem statement given in the assignment:
+This semester I had a three-part problem with three flags. The first two flags were worth three points each and the last one was for four points. The flags were to be solved in order and the difficulty increased with each one. Below is the problem statement given in the assignment:
 
 <!--more-->
 
@@ -18,13 +18,13 @@ This semester I had a three part problem with three flags. The first two flags w
 A cadet learns much about ********** in IT350. A snippet of a router running configuration file can be found on the host 10.R.0.51. (R is the last 2 of your classroom number [52|64]). There are three stages of flags hidden in these systems, see if you can recover the flags. Stage 1 and 2 are worth 3 points each, stage 3 is 4 points. Flags start with IT350. This is also worth endless internet cool points so, no inter-group collaboration!
 ```
 
-My course was taught in two different class rooms and each classroom has its own subnet within our academic research network. The room number determines the subnet to which the each classroom is directly connected. The setup for these problems involved a simple CentOS VM from our ESXi cluster with the address of `10.R.0.51` and a Cisco router in the classroom connected as `10.R.0.50`. This was setup in both the 52 and 64 classrooms. 
+My course was taught in two different classrooms and each classroom has its own subnet within our academic research network. The room number determines the subnet to which each classroom is directly connected. The setup for these problems involved a simple CentOS VM from our ESXi cluster with the address of `10.R.0.51` and a Cisco router in the classroom connected as `10.R.0.50`. This was setup in both the 52 and 64 classrooms. 
 
 ### Stage One
 
-The first task for the students was to remotely connect to the VM at the `.51` address in each classroom. This was pretty simple since the first sentance of the problem states a `cadet` and `**********`. This is a hint since the default username in the class is `cadet` and the default password is `**********`. The students learn about secure shell and its advantages over the unsecure telnet application. So if the student connects via ssh to the VM with those credentials, they have access to the machine in question.
+The first task for the students was to remotely connect to the VM at the `.51` address in each classroom. This was pretty simple since the first sentence of the problem states a `cadet` and `**********`. This is a hint since the default username in the class is `cadet` and the default password is `**********`. The students learn about secure shell and its advantages over the unsecure telnet application. So if the student connects via ssh to the VM with those credentials, they have access to the machine in question.
 
-This account is very locked down in this environment. They have the ability to create files in their local directory but most of the existing file are locked down so that they are not the owners, can can only read and execute those files. A detailed directory listing is below:
+This account is very locked down in this environment. They have the ability to create files in their local directory but most of the existing files are locked down so that they are not the owners, can only read and execute those files. A detailed directory listing is below:
 
 ```sh
 [cadet@it350b1 ~]$ ls -la

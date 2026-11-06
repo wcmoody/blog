@@ -9,9 +9,9 @@ disqus: true
 {: .center}
 ![](/assets/images/ekoctf2016/punchcard.png)
 
-As part of BitsForEveryone, I competed in [EKO Party CTF 2016](https://ctftime.org/event/342). This CTF had a great Misc 250 point challenged called "Old But Gold." 
+As part of BitsForEveryone, I competed in [EKO Party CTF 2016](https://ctftime.org/event/342). This CTF had a great Misc 250 point challenge called "Old But Gold." 
 
-My students immediately pointed this challenge out to me since they knew I loved punch cards. A few months prior, I had written a challenge for our internal try-out CTF in which they were given a base64 encoced ascii art image of an IBM-29 punch card with a message encoded for them. It was a favorite for the students. It took me about 20 minutes to repurpose my code to solve this challenge. 
+My students immediately pointed this challenge out to me since they knew I loved punch cards. A few months prior, I had written a challenge for our internal try-out CTF in which they were given a base64 encoded ascii art image of an IBM-29 punch card with a message encoded for them. It was a favorite for the students. It took me about 20 minutes to repurpose my code to solve this challenge. 
 
 <!--more-->
 
@@ -20,7 +20,7 @@ My students immediately pointed this challenge out to me since they knew I loved
 
 **Files**: [Zip File](/assets/ctffiles/ekoctf2106/misc250_100ff979353dd452.zip)
 
-When extracted, the zip file contains 14 PNG files that are images of IBM-29 punch cards. The images are consistently the same size and with equally spaced punches. Iterating over each column then each row, you can read the punch if the pixel in the top left corner is white. The top row, left most column starts at pixel column 15 and pixel row 20. Each punch location is then spaced 20 pixel vertically and 7 pixels horizontally.
+When extracted, the zip file contains 14 PNG files that are images of IBM-29 punch cards. The images are consistently the same size and with equally spaced punches. Iterating over each column then each row, you can read the punch if the pixel in the top left corner is white. The top row, left most column starts at pixel column 15 and pixel row 20. Each punch location is then spaced 20 pixels vertically and 7 pixels horizontally.
 
 Using PIL, I was able to read each image to find the punches on each row. The following code returns a list of columns of punches, where each column is a list of the rows that are punched.
 
@@ -43,7 +43,7 @@ def convert(imgfile):
 
 {% endhighlight %}
 
-The list of punches now needs to be converted to a string of characters. Understanding the layout of the punches as shown [here](http://www.columbia.edu/cu/computinghistory/029-card.jpg), we can script this up as follows. *note: not all puncutations are converted, just the ones observed on this set of cards*.
+The list of punches now needs to be converted to a string of characters. Understanding the layout of the punches as shown [here](http://www.columbia.edu/cu/computinghistory/029-card.jpg), we can script this up as follows. *note: not all punctuation marks are converted, just the ones observed on this set of cards*.
 
 {% highlight python %}
 def readpunch(p):
@@ -70,7 +70,7 @@ Now we just need to iterate over all 14 cards provided in the zip file to get th
     print ''.join([readpunch(p) for p in convert(f)])
 {% endhighlight %}
 
-The cards in alphabetical order by file name produces the following text. Reading through each line to determine the follow of the story is needed. I did not see any logical way to automate this. I have indicated the final line number after each row of text
+The cards in alphabetical order by file name produce the following text. Reading through each line to determine the flow of the story is needed. I did not see any logical way to automate this. I have indicated the final line number after each row of text
 
 ~~~
 OF TIME PUNCHING THOSE NARDS, CAN YOU IMAGINE WHAT COULD      [8]
@@ -89,7 +89,8 @@ THAT WILL TAKE MORE TIME TO MEBUG AND FIGURE OUT WHERE WAS    [12]
 ONCE UPON A TEME, THERE WAS A YOUNG HACKER CALLED MJ          [1]
 ~~~
 
-Following along with the story, it talks about mistakes. There are also some mistakes in the story. After double checking that the solver was correct, I noticed the first three typos were E, K, O which matches the flag pattern. In order, the flag properly describes the system that used the punchcards. *note: some writeups show the flag using the parenthesis, but since there was no symbol for curly braces I submited the flag with the curlies and got the points*
+Following along with the story, it talks about mistakes. There are also some mistakes in the story. After double checking that the solver was correct, I noticed the first three typos were E, K, O which matches the flag pattern. In order, the flag properly describes the system that used the punchcards. *note: some writeups show the flag using the parenthesis, but since there was no symbol for curly braces I submitted the flag
+ with the curlies and got the points*
 
 ```
 EKO{M41NFR4M3}

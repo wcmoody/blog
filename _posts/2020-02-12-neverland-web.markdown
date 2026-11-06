@@ -17,7 +17,7 @@ Getting started with CTFs can be intimidating but over the past 5 years we have 
 
 <!--more-->
 
-I was able to solve all the web challenges (at least the ones that were post prior to Monday morning). The full web challenge board showed six total challenges ranging from 10 to 150 points. Keep reading to see all the write ups or jump ahead to one of interest to you.
+I was able to solve all the web challenges (at least the ones that were posted prior to Monday morning). The full web challenge board showed six total challenges ranging from 10 to 150 points. Keep reading to see all the write ups or jump ahead to one of interest to you.
 
 ![web_challenges](../assets/images/neverlan2020/web_all_solved.png)
 
@@ -30,7 +30,7 @@ I was able to solve all the web challenges (at least the ones that were post pri
 ## Cookie Monster ##
 
 ![cookie_monster_page](../assets/images/neverlan2020/cookie_monster.png)
-Visiting the URL provided in the challenge prompt, we are treated with a basic website. Based on the title, its a good indication that we are interested in the cookies for the website.
+Visiting the URL provided in the challenge prompt, we are treated with a basic website. Based on the title, it's a good indication that we are interested in the cookies for the website.
 
 According to the site ["What are Cookies?](http://www.whatarecookies.com/), we know the following:
 
@@ -48,7 +48,7 @@ I will import two libraries to use, obviously `requests` but also the regular ex
 import requests
 import re
 ```
-Next, I will create my regular expression to match the flag. The challenge prompt says its of the format `flag{....}`. I can create a pattern object called `patt` that will match the word "flag", grab the open curly brace, then create a character group with the `[]` symbols and match anything that is not a closing curly brace. You do this with the `^` (caret) symbol then the closing curly brace. The caret mean **not** the following character. I will use the asterisks to mean zero or more of these characters. And then the closing curly brace. You can use the awesome regular expression visualizer site, _Regexer_ to see this regular expression [here](https://regexper.com/#flag%7B%5B%5E%7D%5D*%7D)
+Next, I will create my regular expression to match the flag. The challenge prompt says it's of the format `flag{....}`. I can create a pattern object called `patt` that will match the word "flag", grab the open curly brace, then create a character group with the `[]` symbols and match anything that is not a closing curly brace. You do this with the `^` (caret) symbol then the closing curly brace. The caret means **not** the following character. I will use the asterisks to mean zero or more of these characters. And then the closing curly brace. You can use the awesome regular expression visualizer site, _Regexer_ to see this regular expression [here](https://regexper.com/#flag%7B%5B%5E%7D%5D*%7D)
 
 ```python
 patt = re.compile('flag{[^}]*}')

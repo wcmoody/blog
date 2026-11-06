@@ -11,7 +11,7 @@ categories:
   - web
 ---
 
-I am experimenting with Juypter notebooks for solving CTF problems. Here is a notebook converted to a blog entry. You can find the original Jupyter Notebook file [here](/assets/jupyter/picoCTF-2019-web-inspector.ipynb)
+I am experimenting with Jupyter notebooks for solving CTF problems. Here is a notebook converted to a blog entry. You can find the original Jupyter Notebook file [here](/assets/jupyter/picoCTF-2019-web-inspector.ipynb)
 
 <!--more-->
 
@@ -22,7 +22,7 @@ Kishor Balan tipped us off that the following code may need inspection: [https:/
 
 **Solve**
 
-First we will import the functionality we will need for this challenge. Requests will allow us to easily talk to the webserver and BeautifulSoup will allow us to work with the HTML code that is the webserver provides us.
+First we will import the functionality we will need for this challenge. Requests will allow us to easily talk to the webserver and BeautifulSoup will allow us to work with the HTML code that the webserver provides us.
 
 ```python
 import requests
@@ -40,7 +40,7 @@ flag = ""
 r = s.get(url)
 ```
 
-Now that we have the base webpage's source code in our request object `r`, we will build see if there is a flag in our source.
+Now that we have the base webpage's source code in our request object `r`, we will see if there is a flag in our source.
 
 
 ```python
@@ -54,7 +54,7 @@ Now that we have the base webpage's source code in our request object `r`, we wi
 
 
 
-So we have a comment with that tells us the flag will be in parts. Seems that we have part 1. Lets creat a regular expression based on this, that may help us find the rest of the pieces.
+So we have a comment with that tells us the flag will be in parts. Seems that we have part 1. Let's create a regular expression based on this, that may help us find the rest of the pieces.
 
 
 ```python
@@ -62,14 +62,14 @@ from re import compile
 patt = compile('flag: ([\w{}_?]*) ')
 ```
 
-We have the source code for the site, lets build a BeautifulSoup object so we can grab that comment.
+We have the source code for the site, let's build a BeautifulSoup object so we can grab that comment.
 
 
 ```python
 soup = bs(r.text,features="html.parser")
 ```
 
-Since our regular expression has the a capture group defined, we will just grab that chunk from our comments and add them to our flag.
+Since our regular expression has a capture group defined, we will just grab that chunk from our comments and add them to our flag.
 
 
 ```python
@@ -96,7 +96,7 @@ for link in soup.findAll('link'):
 
 
 
-Now we will grab that piece of the flag and add it to `flag` variable.
+Now we will grab that piece of the flag and add it to the `flag` variable.
 
 
 ```python
@@ -136,7 +136,7 @@ for script in soup.findAll('script'):
         flag += m2[0]
 ```
 
-And now we can check out final flag. Looks good to me.
+And now we can check out our final flag. Looks good to me.
 
 
 ```python

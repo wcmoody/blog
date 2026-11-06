@@ -8,7 +8,7 @@ image: assets/images/rc3ctf2017/math_class.png
 author: clay
 ---
 
-I participated with BitsForEveryone in RC3CTF. There were five coaches from the C3T team competing and we finished in 12 place with a total of 1850 points. Pretty good showing. Lots of interesting problems. 
+I participated with BitsForEveryone in RC3CTF. There were five coaches from the C3T team competing and we finished in 12th place with a total of 1850 points. Pretty good showing. Lots of interesting problems. 
 
 Though we did not get the 400 points for this problem since I finally solved it 20 minutes after the end of the competition, I want to post a writeup since it was very cool.
 
@@ -21,11 +21,11 @@ We are presented with a PDF file containing a series of two digit addition probl
 
 ## The realization
 
-So when I first looked at this I noticed that the second math problem was incorrect. But I did not think much of it. Around mid day on Saturday of the CTF, the admin's posted some hints to many of the problems. The hint to this problems said _you must be BLIND not to see the pattern_. When I saw they hint, I went back to the problem and told my teammate "It's Braille!, I got this!" (see my previous post on Stevie and Ray)
+So when I first looked at this I noticed that the second math problem was incorrect. But I did not think much of it. Around mid day on Saturday of the CTF, the admins posted some hints to many of the problems. The hint to this problem said _you must be BLIND not to see the pattern_. When I saw the hint, I went back to the problem and told my teammate "It's Braille!, I got this!" (see my previous post on Stevie and Ray)
 
-Each summation problem is two digits wide and three digits tall. Just like a Braille character. The only question was which numbers were raised dots and which were flat dots. The numbers can be partioned many different ways, and my first instinct was even and odds. The text at the top of the PDF confirmed this. _you can't see the errors even though they are right in front of you._ My first hypothesis was even was a raised dot. Time to repurpose my braille library for this challenge.
+Each summation problem is two digits wide and three digits tall. Just like a Braille character. The only question was which numbers were raised dots and which were flat dots. The numbers can be partitioned many different ways, and my first instinct was even and odds. The text at the top of the PDF confirmed this. _you can't see the errors even though they are right in front of you._ My first hypothesis was even was a raised dot. Time to repurpose my braille library for this challenge.
 
-Since my Braille Library uses lowercase `o` for raised and `.` for flat, I needed to convert the math expressions to this. Luckily the PDF was highlightable and I just copy and pasted the numbers into a text file and cleaned it up by removing the `+` and spacing them evenly. Below is those digits.
+Since my Braille Library uses lowercase `o` for raised and `.` for flat, I needed to convert the math expressions to this. Luckily the PDF was highlightable and I just copy and pasted the numbers into a text file and cleaned it up by removing the `+` and spacing them evenly. Below are those digits.
 
 ```
 42 54 66 24 29 32 21

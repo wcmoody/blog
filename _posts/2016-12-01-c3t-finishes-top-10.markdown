@@ -19,7 +19,7 @@ This annual event features teams from the top computer science schools in the na
 
 <!--more-->
 
-Represented by just four cadets at the championship, the achievement was an accomplishment for the entire team of 20 cadets (plus one midshipmen and a local high school student). During the qualifying competition in September, BFE locked themselves in Thayer Hall and hacked away in the online competition for 48 consecutive hours.
+Represented by just four cadets at the championship, the achievement was an accomplishment for the entire team of 20 cadets (plus one midshipman and a local high school student). During the qualifying competition in September, BFE locked themselves in Thayer Hall and hacked away in the online competition for 48 consecutive hours.
 
 Solving problems in the categories of reverse engineering, binary exploitation, cryptography, web security and forensics, they finished 46th out of 1,274 teams around the world. The team finished 14th in undergraduate North American teams and high enough to advance to the final live event hosted in Brooklyn in November.
 
@@ -37,7 +37,7 @@ He additionally recognizes having two thirds of the team being new this year as 
 
 The team sharpened their skills during many activities over the past year to improve their offensive and defensive cyber abilities. They held weekend workshops led by cyber security experts from across the security field.
 
-They have also augmented their traditional classroom education with attendance at conferences, training events and internships with the organizations from across government, academia, and industry. Recently, cadets and coaches participated in an individual Army-wide CTF competition where many finished at the top of their respective categories.
+They have also augmented their traditional classroom education with attendance at conferences, training events and internships with organizations from across government, academia, and industry. Recently, cadets and coaches participated in an individual Army-wide CTF competition where many finished at the top of their respective categories.
 
 It’s a fine line between the love of computer security and the thrill of taking over a target computer that motivates and inspires the C3T cadets to give up their free time to improve their understanding of cyber warfare.
 

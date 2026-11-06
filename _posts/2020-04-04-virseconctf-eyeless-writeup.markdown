@@ -12,7 +12,7 @@ image: assets/images/virseccon/virseccon-ctf-logo.png
 
 ---
 
-VirSecCon CTF was the CTF as part of the Virtual Security Conference in April 2020 during the COVID-19 pandemic. This CTF was put on by [John Hammond](https://www.youtube.com/channel/UCVeW9qkBjo3zosnqUbG7CFw) and feature many great introductory and moderate challenges. I competed by myself and overall I finished in 35th place (or 36th depending on where you look) out of 1536.
+VirSecCon CTF was the CTF as part of the Virtual Security Conference in April 2020 during the COVID-19 pandemic. This CTF was put on by [John Hammond](https://www.youtube.com/channel/UCVeW9qkBjo3zosnqUbG7CFw) and featured many great introductory and moderate challenges. I competed by myself and overall I finished in 35th place (or 36th depending on where you look) out of 1536.
 
 ![](../assets/images/virseccon/final_place.jpeg)
 
@@ -32,18 +32,18 @@ Testing for a quick SQL injection payload (`' or 1=1 -- `) for the user name got
 
 I immediately knew this meant the password was the flag. We would need to tease it out via a blind sql injection.
 
-Throwing in an erronous login, we were given a different error message.
+Throwing in an erroneous login, we were given a different error message.
 
 ![](../assets/images/virseccon/eyeless-login-error.png)
 
-But a dectected hacking attempt gains us a hacker warning
+But a detected hacking attempt gains us a hacker warning
 
 ![](../assets/images/virseccon/eyeless-login-hacker.png)
 
 
-So lets head to python and use the requests library to solve this.
+So let's head to python and use the requests library to solve this.
 
-First lets check out the source code to figure out how to interact with the pages. We quickly can discover the home page is at `index.php`. With the following HTML code returned.
+First let's check out the source code to figure out how to interact with the pages. We quickly can discover the home page is at `index.php`. With the following HTML code returned.
 
 ```html
 <html>
@@ -256,7 +256,7 @@ User is admin
 User is not madeye
 ```
 
-Now we know the username, lets figure out the password. The first thing I like to do if figure out the length of the password. Using the `length` function in MySQL, we can discovery this using the following function:
+Now we know the username, let's figure out the password. The first thing I like to do is figure out the length of the password. Using the `length` function in MySQL, we can discover this using the following function:
 
 ```python
 def get_len():
@@ -300,13 +300,13 @@ def confirm_password_is_flag():
 
 confirm_password_is_flag()
 ```
-This give us the following output.
+This gives us the following output.
 
 ```
 The password starts with LLS{
 ```
 
-Ok, now lets get build the password one hex character at a time. We will start assuming nothing, and after getting a hit on a hex character, we will add that to our known string and iterate through the hex characters again. The main loop is below. We print out the known portion after each hit so we know we are making progress.
+Ok, now let's build the password one hex character at a time. We will start assuming nothing, and after getting a hit on a hex character, we will add that to our known string and iterate through the hex characters again. The main loop is below. We print out the known portion after each hit so we know we are making progress.
 
 ```python
 username = "admin' and hex(password) like '{}%' -- "

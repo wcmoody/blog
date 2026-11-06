@@ -24,18 +24,18 @@ These challenges were favorites with the cadets. Both challenges were released i
 
 Hacker candidates were presented with the challenge description of `There is an odd service running at {{server}} on port {{port}}. See if you can break its code and interact with it.`.
 
-When the connecting to the service the following mesage is received:
+When connecting to the service the following message is received:
 ```
 .. .o o. o. .o .. oo o. .. oo o. o. .. .o o. oo .o ..
 .. oo oo .. oo .. .o .o .. .o .o .. .. oo .. .o oo o.
 .o .o .. .. o. .. .. o. .. oo o. oo .. .o .. o. o. oo
 ```
-This appears to be garabage, but after a few minutes of studying, you may see that it is Braille. Braille is an interesting encoding scheme. A single character
-is represent by a series of flat or raised dots in the arrangement of 3 rows and 2 columns. There is a character for the 26 lowercase letters. There is also a
-shift symbol and a number sign symbol. When the letter `a` through `j` is preceeded with by the `number` character that is the number 1-0 [where a is 1 and j is
-0]. When proceeded by a `shift` symbol, the following letter is a capital letter.
+This appears to be garbage, but after a few minutes of studying, you may see that it is Braille. Braille is an interesting encoding scheme. A single character
+is represented by a series of flat or raised dots in the arrangement of 3 rows and 2 columns. There is a character for the 26 lowercase letters. There is also a
+shift symbol and a number sign symbol. When the letter `a` through `j` is preceded by the `number` character that is the number 1-0 [where a is 1 and j is
+0]. When preceded by a `shift` symbol, the following letter is a capital letter.
 
-The encoded provided is using a lower case letter O for a raised dot and a period for a flat dot. Decoding the provided prompt, we see the message is `What do you want?`. The user is able to interact with the service by typing a response, but nothing happens until after three lines have been entered. Afterwards, another encoded message is returned. Providing the input of `flag` three times provides the following message:
+The encoding provided is using a lower case letter O for a raised dot and a period for a flat dot. Decoding the provided prompt, we see the message is `What do you want?`. The user is able to interact with the service by typing a response, but nothing happens until after three lines have been entered. Afterwards, another encoded message is returned. Providing the input of `flag` three times provides the following message:
 
 ```
 .. .o o. o. o. oo .. .. .. oo o. .. oo .o oo o.
@@ -51,7 +51,7 @@ response in Braille. Encoding either `Flag` or `flag` will provide the flag enco
 .. o. .o oo oo .o oo .. .. .o .o .. .o o. .. .o
 .o o. o. o. o. oo o. .. .o o. o. .. .. .. .. ..
 ```
-The flag is `C3T Br4il3 4 The W1n`. There are no symbols for `{ }` so the normal flag pattern is not followed, but its a quick solve at this point.
+The flag is `C3T Br4il3 4 The W1n`. There are no symbols for `{ }` so the normal flag pattern is not followed, but it's a quick solve at this point.
 
 The server code that generates the prompt can be seen below:
 

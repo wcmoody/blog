@@ -63,12 +63,12 @@ There will be lots of walkthroughs posted for these, I am sure like JohnHammonds
 Here are the highlights:
 
 - Generate a random user name and register for an account
-- Login with the generated accounted
+- Login with the generated account
 - View the cookie, specifically the name (one of the questions)
 - Decode the cookie
 - Hack the cookie for Santa and print the hex string
 - Access the site as Santa
-- Enable all the services (if they are not currenlty on)
+- Enable all the services (if they are not currently on)
 - Access the flag
 
 ```python
@@ -258,7 +258,7 @@ Good luck on your mission (and maybe I'll see y'all again on Christmas Eve)!
 
 > Hack the hackers and bypass a login page to gain admin privileges.
 
-This one was super fun to automate, as I was able to solve it without even opening the site in a browswer. Of course, I did not use **burpsuite** which was a learning objective of the challenge. But oh well. Also I was able to pull all the information for the form from the html using _beautifulsoup_ (request method and login end-point).
+This one was super fun to automate, as I was able to solve it without even opening the site in a browser. Of course, I did not use **burpsuite**, which was a learning objective of the challenge. But oh well. Also I was able to pull all the information for the form from the html using _beautifulsoup_ (request method and login end-point).
 
 ![](../assets/images/adventofcyber/day3-site.png)
 
@@ -330,7 +330,7 @@ if match:
 
 ```
 
-Running the scripts we get the following output and [redacted] flag.
+Running the scripts, we get the following output and [redacted] flag.
 
 ```
 Username found to be admin
@@ -354,9 +354,9 @@ Here are the highlights:
 - Read in all words from the provided wordlists
 - Use all words that contain "api" and test url + word
 - If the status code is not `404`, save that word
-- Access the site at url + saved word, its a directory listing
+- Access the site at url + saved word, it's a directory listing
 - Grab all links to other files
-- Itierate over those file using the dates from the wordlist as date parameter
+- Iterate over those files using the dates from the wordlist as date parameter
 - Match the output for the TryHackMe Flag
 - Profit!
 

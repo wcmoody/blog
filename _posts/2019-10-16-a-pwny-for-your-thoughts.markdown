@@ -13,13 +13,13 @@ image: assets/images/pico2019/family_guy_pony_ride.jpg
 
 ---
 
-I have never really been that great at binary exploitation challenges. But I am fascinated with return oriented programming attacks and the concept of [weird machines](https://www.cs.dartmouth.edu/~sergey/wm/). To this end, I am intentionally working on getting better and wanted to blog about some of my recent work with pwn challenges and some cool tools and tricks I have learned. This is very much an introductory coverage of a binary exploitation, but maybe even those more experienced will see something new here. This will _hopefully_ be the first of many posts on pwn and lead to some *rop* challenges.
+I have never really been that great at binary exploitation challenges. But I am fascinated with return oriented programming attacks and the concept of [weird machines](https://www.cs.dartmouth.edu/~sergey/wm/). To this end, I am intentionally working on getting better and wanted to blog about some of my recent work with pwn challenges and some cool tools and tricks I have learned. This is very much an introductory coverage of binary exploitation, but maybe even those more experienced will see something new here. This will _hopefully_ be the first of many posts on pwn and lead to some *rop* challenges.
 
 <!--more-->
 
-I love to CTF. I have not had chance to do it much over the past year, much less do any write ups. But with the [Presidents Cup Cybersecurity](https://presidentscup.us) competition this fall, I started getting back in to it. More on that in the future. So to get my CTF-game back on, I put lots of effort into one of my favorite CTFs of the year, [picoCTF](http://www.picoctf.com). So I will start with a few intro pwn challenges from this years pico. 
+I love to CTF. I have not had a chance to do it much over the past year, much less do any write ups. But with the [Presidents Cup Cybersecurity](https://presidentscup.us) competition this fall, I started getting back in to it. More on that in the future. So to get my CTF-game back on, I put lots of effort into one of my favorite CTFs of the year, [picoCTF](http://www.picoctf.com). So I will start with a few intro pwn challenges from this year's pico. 
 
-Some of this may seem overkill for such an easy problem, but it's cool to try and break it as throughly as possible. Plus, its good practice and some people might be trying to learn out there/.
+Some of this may seem overkill for such an easy problem, but it's cool to try and break it as thoroughly as possible. Plus, it's good practice and some people might be trying to learn out there/.
 
 ### Overflow-1
 
@@ -27,7 +27,7 @@ Some of this may seem overkill for such an easy problem, but it's cool to try an
 
 You beat the first overflow challenge. Now overflow the buffer and change the return address to the flag function in this _program_? You can find it in `/problems/overflow-1_...` on the shell server. _Source_
 
-We are provided with links to a binary executable [vuln](../assets/images/pico2019/oveflow1/vuln) and the source [vuln.c](../assets/images/pico2019/overflow1/vuln.c). The source can seen below.
+We are provided with links to a binary executable [vuln](../assets/images/pico2019/oveflow1/vuln) and the source [vuln.c](../assets/images/pico2019/overflow1/vuln.c). The source can be seen below.
 
 ```c
 #include <stdio.h>
@@ -81,7 +81,7 @@ total 16
 -rw-rw-r-- 1 hacksports hacksports    742 Sep 28 21:51 vuln.c
 ```
 
-We have the two files that are linked from the problem description (`vuln` and `vuln.c`) and a `flag.txt` file. Only the owner (hacksports) can read the flag file. Our ctf-participant user can read the source code and read and execute the binary. A special note of the binary is that the `setgid` bit is enable. This means that when any user executes the binary, the program operates with the permissions of the owning group (`overflow-1`). So even though we cannot read the flag file, when we run the `vuln` binary, it can read the flag file for us. This will be important as we investigate the binary.
+We have the two files that are linked from the problem description (`vuln` and `vuln.c`) and a `flag.txt` file. Only the owner (hacksports) can read the flag file. Our ctf-participant user can read the source code and read and execute the binary. A special note of the binary is that the `setgid` bit is enabled. This means that when any user executes the binary, the program operates with the permissions of the owning group (`overflow-1`). So even though we cannot read the flag file, when we run the `vuln` binary, it can read the flag file for us. This will be important as we investigate the binary.
 
 Checking out the binary with the `file` command we see the following:
 
@@ -90,7 +90,7 @@ $ file vuln
 vuln: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-, for GNU/Linux 3.2.0, BuildID[sha1]=5d4cdc8dc51fb3e5d45c2a59c6a9cd7958382fc9, not stripped
 ```
 
-So we know its a dynamically linked 32-bit binary. We can look at some more stuff, but since we have source code, we don't too much more information. But lets just go through the steps.
+So we know it's a dynamically linked 32-bit binary. We can look at some more stuff, but since we have source code, we don't too much more information. But lets just go through the steps.
 
 Checking out the shared object dependencies, we can see  the libc information.
 
@@ -198,7 +198,7 @@ Finally, in our uncalled _flag_ function we see a call to `fopen()` on the flag 
 
 So, I am sure you are saying... "come on, Clay!" get to the good part, we know all that about the binary. But hopefully if you are reading this you are getting a better understanding of why these exploits work, and how to do this without source code.
 
-When looking at all those function calls, there should be a red flag (no pun intended) caught your eye. Its the use of the `gets()` function call. When looking at the man page for gets, you will see the following verbiage used:
+When looking at all those function calls, there should be a red flag (no pun intended) caught your eye. It's the use of the `gets()` function call. When looking at the man page for gets, you will see the following verbiage used:
 
 ```
 NAME
@@ -250,7 +250,7 @@ $ objdump -D -Mintel vuln | grep 8048705 -B 1
 
 Interestingly enough, the instruction to call our vulnerable function, is 5 bytes before the call to `vuln()` at `0x08048700`. So the first thing I am going to try is to loop back into _vuln_ for a second time. 
 
-Remembering the blurb from the man page for `gets()`, it says the function will read all the characters until it encounters a newline or an end-of-file condition, and then that character will be replaced with a null byte. So if we send exactly 76 bytes then a newline (grand total of 77), we will overflow the buffer and overwrite the saved base pointer and our null byte will overwrite the LSB of the saved return pointer. Esssentially replacing that `0x05` with our `0x00` and thus calling `vuln()` again.
+Remembering the blurb from the man page for `gets()`, it says the function will read all the characters until it encounters a newline or an end-of-file condition, and then that character will be replaced with a null byte. So if we send exactly 76 bytes then a newline (grand total of 77), we will overflow the buffer and overwrite the saved base pointer and our null byte will overwrite the LSB of the saved return pointer. Essentially replacing that `0x05` with our `0x00` and thus calling `vuln()` again.
 
 ![](../assets/images/pico2019/overflow1/peda-vuln-ebp-eip.png)
 
@@ -365,7 +365,7 @@ void vuln(){
 }
 ```
 
-You will notice, I cleaned up the `printf()` statement since we don't have a copy of `asm.h` so you we cannot use the `get_return_address()` function call. Additionally you need to comment out the include statement for the asm header file.
+You will notice, I cleaned up the `printf()` statement since we don't have a copy of `asm.h` so we cannot use the `get_return_address()` function call. Additionally you need to comment out the include statement for the asm header file.
 
 Compiling and attempting to exploit this patched `vuln.c` shows it is not vulnerable to a buffer overflow.
 

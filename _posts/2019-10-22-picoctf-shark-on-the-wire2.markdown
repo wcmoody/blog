@@ -14,7 +14,7 @@ categories:
 
 ---
 
-Back to another picoCTF challenge, this time to a challenge that is more in my wheel house. Network traffic forensics... specifically "shark on the wire 2" for 300 points. There is a first challenge in this series, which would be _Baby Shark_ so this one is _Mama Shark_
+Back to another picoCTF challenge, this time to a challenge that is more in my wheelhouse. Network traffic forensics... specifically "shark on the wire 2" for 300 points. There is a first challenge in this series, which would be _Baby Shark_ so this one is _Mama Shark_
 
 <!--more-->
 
@@ -28,7 +28,7 @@ We found this packet capture. Recover the flag that was pilfered from the networ
 
 You can grab a copy of the pcap file [here](//assets/images/pico2019/shark2/capture.pcap).
 
-When I solved this on the first Sunday night of the competition, I was only the 26th person to solve the challenge. By far my earliest solve of the event. At the time of writing this blog, there were 522 solves. Which is still considerable less than the 3733 that had solved the first wireshark challenge.
+When I solved this on the first Sunday night of the competition, I was only the 26th person to solve the challenge. By far my earliest solve of the event. At the time of writing this blog, there were 522 solves. Which is still considerably less than the 3733 that had solved the first wireshark challenge.
 
 **Analyze It**
 
@@ -41,17 +41,17 @@ capture.pcap: tcpdump capture file (little-endian) - version 2.4 (Ethernet, capt
 
 So this file was created with tcpdump. We will open it with [wireshark](https://www.wireshark.org/download.html), but eventually will extract the flag with some other cool tools.
 
-In wireshark, the "Statistics" menu has some good places to start. I like to look at [Endpoints.](https://www.wireshark.org/docs/wsug_html_chunked/ChStatEndpoints.html) Here you get a breakdown of the number of logical endpoints for specific protocol layer. Here we see a list of IPv4, TCP, and UDP endpoints.
+In wireshark, the "Statistics" menu has some good places to start. I like to look at [Endpoints.](https://www.wireshark.org/docs/wsug_html_chunked/ChStatEndpoints.html) Here you get a breakdown of the number of logical endpoints for a specific protocol layer. Here we see a list of IPv4, TCP, and UDP endpoints.
 
 ![](/assets/images/pico2019/shark2/shark-2-ipv4-endpoints.png	
 )
 
-34 `IPv4` distinct addresses were seen in the capture. Most of them are RFP 1918 [private address](https://en.wikipedia.org/wiki/Private_network). These makes sense as most of the time CTF traffic is between two local private hosts.
+34 `IPv4` distinct addresses were seen in the capture. Most of them are RFC 1918 [private address](https://en.wikipedia.org/wiki/Private_network). This makes sense as most of the time CTF traffic is between two local private hosts.
 
 ![](/assets/images/pico2019/shark2/shark-2-tcp-endpoints.png
 )
 
-Only two `IP:TCP` port tuples observed. Telling us there only one TCP flow in the capture. A quick easy place to start and probably quickly rule out.
+Only two `IP:TCP` port tuples observed. Telling us there is only one TCP flow in the capture. A quick easy place to start and probably quickly rule out.
 
 ![](/assets/images/pico2019/shark2/shark-2-udp-endpoints.png
 )

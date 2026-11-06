@@ -39,7 +39,7 @@ Deploying the VM we get an IP address assigned
 
 ### Enumerating the Services
 
-Running `nmap` for all ports (`-p-`) on this target give us 4 open ports.
+Running `nmap` for all ports (`-p-`) on this target gives us 4 open ports.
 
 ```
 $ nmap -p- -T4 10.10.238.162
@@ -56,7 +56,7 @@ PORT    STATE SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 88.94 seconds
 ```
 
-Running default scripts and enumerate versions on those open ports, give us the following:
+Running default scripts and enumerating versions on those open ports gives us the following:
 
 ```
 $ nmap -sC -sV -p22,80,139,445 10.10.238.162
@@ -87,12 +87,12 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 51.75 seconds
 ```
 
-So we have a Ubuntu Linux host running OpenSSH, Apache 2.4.41, and smbd 4.6.2. All appear to be current versions. The http title seems special.
+So we have an Ubuntu Linux host running OpenSSH, Apache 2.4.41, and smbd 4.6.2. All appear to be current versions. The http title seems special.
 
 
 ### Samba Server - TCP Port 445
 
-Access the samba server on port 445, we see there is one intersting share.
+Access the samba server on port 445, we see there is one interesting share.
 
 ```
 $ smbclient -L //10.10.238.162
