@@ -16,7 +16,7 @@ categories:
 
 In December 2017, the folks at SANS and Counter Hack Challenges released another edition of the [Holiday Hack Challenge](https://www.holidayhackchallenge.com/2017/). This one was called *Wintered*, and the North Pole was having a bit of a problem with giant snowballs.
 
-That year's Holiday Hack was a little different for me. I had played the challenges in 2015 and 2016, but in the summer of 2017 I got the opportunity to work with the Counter Hack crew, helping develop content for SANS NetWars and Holiday Hack. I even got to spend some time in the secret room where the sausage was made.
+That year's Holiday Hack was a little different for me. I had played the challenges in 2015 and 2016, but in the summer of 2017 I got the opportunity to work with the Counter Hack crew, helping develop content for SANS NetWars V and Holiday Hack. I even got to spend some time in the secret room where the sausage was made.
 
 One of my assignments involved the North Pole Police Department (NPPD) website. There was an official challenge associated with the website and an intended solution. That is not really what I want to talk about here.
 
@@ -137,7 +137,7 @@ Sand-Crawler-delay: 2187
 
 The numbers weren't random either. **421** points to TK-421, the missing stormtrooper mentioned aboard the Millennium Falcon in *A New Hope*. **2187** is a reference to Princess Leia's detention cell on the Death Star.
 
-The Star Wars jokes were also a little nod to the Star Wars-themed SANS NetWars challenges I had helped write earlier that year. Apparently I wasn't ready to leave the droids behind.
+The Star Wars jokes were also a little nod to the Star Wars-themed SANS NetWars V challenges I had helped write earlier that year. Apparently I wasn't ready to leave the droids behind.
 
 ## Humans deserve a file, too
 
